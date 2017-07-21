@@ -35,7 +35,7 @@ class AdvertController extends Controller
 
     public function indexAction($page = 1, Request $request)
     {
-        dump($this->get('kernel')->getEnvironment());
+        //dump($this->get('kernel')->getEnvironment());
         if ($page < 1)
         {
             $session = $request->getSession();
