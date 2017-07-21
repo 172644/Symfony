@@ -1,0 +1,41 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+  encoders:
+    OC\UserBundle\Entity\User: sha512
+
+  role_hierarchy:
+    # Un admin hérite des droits d'auteur et de modérateur
+    ROLE_ADMIN:       [ROLE_AUTEUR, ROLE_MODERATEUR]
+    # On garde ce rôle superadmin, il nous resservira par la suite
+    ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+  providers:
+    main:
+      id: fos_user.user_provider.username_email
+
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main_login:
+      # Cette expression régulière permet de prendre /login (mais pas /login_check !)
+      pattern:   ^/(login|register|traduction)/?$
+      anonymous: true # On autorise alors les anonymes sur ce pare-feu
+      provider:  main # On change cette valeur
+    main:
+      pattern:   ^/
+      anonymous: false
+      provider:  main # On change cette valeur
+      form_login:
+        login_path: fos_user_security_login
+        check_path: fos_user_security_check
+      logout:
+        path:       fos_user_security_logout
+        target:     fos_user_security_login
+      remember_me:
+        secret:     %secret% # %secret% est un paramètre de parameter
+
+  access_control:
+    - { path: ^/admin, ip: 127.0.0.1, requires_channel: https }
+    #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

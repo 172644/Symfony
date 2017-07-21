@@ -1,0 +1,25 @@
+<ul class="nav nav-pills nav-stacked">
+    {% if listAdverts is defined %}
+        {% for advert in listAdverts %}
+            <li>
+                <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
+                    {% if showNumber is defined %}
+                        {{ advert.title ~ " [" ~ advert.nbApplications ~ "]" }}
+                    {%  else %}
+                        {{ advert.title }}
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    {% endif %}
+
+    {% if listMenu is defined %}
+        {% for menu in listMenu %}
+            <li>
+                <a href="{{ menu.url }}">
+                    {{ menu.title }}
+                </a>
+            </li>
+        {% endfor %}
+    {% endif %}
+</ul>

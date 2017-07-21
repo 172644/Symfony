@@ -1,0 +1,23 @@
+{% extends "OCCoreBundle::layout.html.twig" %}
+
+{% block title %}
+    Index - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
+    <h1>Annonces</h1>
+
+    <hr>
+
+    <p>
+    {# On affiche tous les messages flash dont le nom est « info » #}
+    {% for message in app.session.flashbag.get('info') %}
+        <p>Message flash : {{ message }}</p>
+    {% endfor %}
+    </p>
+
+    <hr>
+    {{ render(controller("OCPlatformBundle:Advert:lastAnnonce", {'limit': 3})) }}
+{% endblock %}

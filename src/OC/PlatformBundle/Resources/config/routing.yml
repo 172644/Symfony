@@ -1,0 +1,72 @@
+oc_platform_oldhome:
+    path:      /old/
+    defaults: { _controller: OCPlatformBundle:Advert:old_index }
+
+oc_platform_home:
+    path:      /{page}
+    defaults:
+        _controller: OCPlatformBundle:Advert:index
+        page:        1
+    requirements:
+        page: \d*
+
+oc_platform_purge:
+    path:      /purge/{day}
+    defaults:
+        _controller: OCPlatformBundle:Advert:purge
+    requirements:
+        day: \d+
+
+oc_platform_view:
+    path:      /advert/{id}
+    defaults:
+        _controller: OCPlatformBundle:Advert:view
+    requirements:
+        id: \d+
+
+oc_platform_add:
+    path:      /add
+    defaults:
+        _controller: OCPlatformBundle:Advert:add
+
+oc_platform_edit:
+    path:      /edit/{id}
+    defaults:
+        _controller: OCPlatformBundle:Advert:edit
+    requirements:
+        id: \d+
+
+oc_platform_delete:
+    path:      /delete/{id}
+    defaults:
+        _controller: OCPlatformBundle:Advert:delete
+    requirements:
+        id: \d+
+
+
+
+
+
+oc_platform_hello:
+    path:      /hello
+    defaults: { _controller: OCPlatformBundle:Advert:hello }
+
+oc_platform_mail:
+    path:      /mail/{email}
+    defaults: { _controller: OCPlatformBundle:Advert:sendmail }
+
+oc_platform_hello_name:
+    path:      /hello/{name}
+    defaults: { _controller: OCPlatformBundle:Advert:hello }
+
+oc_platform_view_json:
+    path:      /json
+    defaults: { _controller: OCPlatformBundle:Advert:json }
+
+oc_platform_session:
+    path:      /session
+    defaults: { _controller: OCPlatformBundle:Advert:session }
+
+oc_platform_session_id:
+    path:      /session/{advert_id}
+    defaults: { _controller: OCPlatformBundle:Advert:session }
