@@ -35,6 +35,7 @@ class AdvertController extends Controller
 
     public function indexAction($page = 1, Request $request)
     {
+        //plop
         //dump($this->get('kernel')->getEnvironment());
         if ($page < 1)
         {
