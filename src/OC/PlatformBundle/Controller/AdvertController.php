@@ -35,7 +35,6 @@ class AdvertController extends Controller
 
     public function indexAction($page = 1, Request $request)
     {
-        $varConflict = "Hello tout le monde !";
         //dump($this->get('kernel')->getEnvironment());
         if ($page < 1)
         {
