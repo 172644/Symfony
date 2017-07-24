@@ -42,7 +42,7 @@ class AdvertController extends Controller
             $session->getFlashBag()->add('info', "'Page \"'.$page.'\" inexistante.'");
             return $this->redirectToRoute('oc_platform_home');
         }
-        $nbPerPage = 5;
+        $nbPerPage = 10;
         $em = $this->getDoctrine()->getManager();
         $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->getAdverts($page, $nbPerPage);
 
@@ -63,7 +63,7 @@ class AdvertController extends Controller
     }
     ///////////////////////////////////////////////////////////////////////////////////
 
-    public function purgeAction($day = 90)
+    public function purgeAction($day = 60)
     {
         $service = $this->container->get('oc_platform.service.deleteAdvert');
         $listAdverts = $service->purge($day);
