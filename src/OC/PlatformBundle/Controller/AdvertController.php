@@ -43,7 +43,7 @@ class AdvertController extends Controller
             $session->getFlashBag()->add('info', "'Page \"'.$page.'\" inexistante.'");
             return $this->redirectToRoute('oc_platform_home');
         }
-        $nbPerPage = 10;
+        $nbPerPage = 5;
         $em = $this->getDoctrine()->getManager();
         $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->getAdverts($page, $nbPerPage);
 
