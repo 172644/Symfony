@@ -150,9 +150,11 @@ class AdvertType extends AbstractType
                     return; // On sort de la fonction sans rien faire lorsque $advert vaut null
                 }
 
-                foreach ($this->newCat as $_cat) {
-                    if(empty($categorieName[$_cat->getName()]) || $categorieName[$_cat->getName()] == null)
-                        $advert->addCategory($_cat);
+                if(!empty($this->newCat) && $this->newCat != null) {
+                    foreach ($this->newCat as $_cat) {
+                        if (empty($categorieName[$_cat->getName()]) || $categorieName[$_cat->getName()] == null)
+                            $advert->addCategory($_cat);
+                    }
                 }
 
                 $event->setData($advert);
