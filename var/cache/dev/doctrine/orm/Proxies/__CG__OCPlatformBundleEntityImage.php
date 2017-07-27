@@ -176,6 +176,17 @@ class Image extends \OC\PlatformBundle\Entity\Image implements \Doctrine\ORM\Pro
     /**
      * {@inheritDoc}
      */
+    public function setUpdatedAtNow()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUpdatedAtNow', []);
+
+        return parent::setUpdatedAtNow();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getUploadDir()
     {
 

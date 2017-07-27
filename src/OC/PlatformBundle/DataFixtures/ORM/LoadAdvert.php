@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\Application;
 use OC\PlatformBundle\Entity\AdvertSkill;
+use OC\PlatformBundle\Entity\Image;
 use OC\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -58,11 +59,36 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
 
 
         $userManager = $manager->getRepository('OCUserBundle:User');
+
+        $imgFixtures = array('597a07ea82758396195558.jpg', '597a086f52a67895511418.jpg', '597a088bacab4750779183.jpg');
+        $uploadPath = './web/uploads/';
+
+        $dossier=opendir($uploadPath);
+        while ($File = readdir($dossier))
+        {
+            if ($File != "." && $File != ".." && $File != "imgFixtures")
+            {
+                $Vidage = $uploadPath.$File;
+                unlink($Vidage);
+            }
+        }
+        closedir($dossier);
+
+        copy($uploadPath.'imgFixtures/'.$imgFixtures[0], $uploadPath.$imgFixtures[0]);
+        copy($uploadPath.'imgFixtures/'.$imgFixtures[1], $uploadPath.$imgFixtures[1]);
+        copy($uploadPath.'imgFixtures/'.$imgFixtures[2], $uploadPath.$imgFixtures[2]);
         /////////////////////////////////////////////////////////////////////////////////////////
+
+        $image = new Image();
+        $image->setImageName('597a07ea82758396195558.jpg');
+        $image->setImageSize(5355);
+        $image->setUpdatedAtNow();
+
         $advert = new Advert();
         $advert->setTitle('Recherche développeur Symfony.');
         $advert->setAuthor($userManager->findOneBy(array('username' => 'erwan')));
         $advert->setContent("Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…");
+        $advert->setImage($image);
 
         $manager->persist($advert);
 
@@ -92,10 +118,16 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
 
         /////////////////////////////////////////////////////////////////////////////////////////
 
+        $image = new Image();
+        $image->setImageName('597a086f52a67895511418.jpg');
+        $image->setImageSize(16348);
+        $image->setUpdatedAtNow();
+
         $advert = new Advert();
         $advert->setTitle('Mission de webmaster');
         $advert->setAuthor($userManager->findOneBy(array('username' => 'erwan')));
         $advert->setContent("Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…");
+        $advert->setImage($image);
 
         $application1 = new Application();
         $application1->setAuthor($userManager->findOneBy(array('username' => 'Jean')));
@@ -118,10 +150,16 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
 
         /////////////////////////////////////////////////////////////////////////////////////////
 
+        $image = new Image();
+        $image->setImageName('597a088bacab4750779183.jpg');
+        $image->setImageSize(62869);
+        $image->setUpdatedAtNow();
+
         $advert = new Advert();
         $advert->setTitle('Offre de stage webdesigner');
         $advert->setAuthor($userManager->findOneBy(array('username' => 'admin')));
         $advert->setContent("Nous proposons un poste pour webdesigner. Blabla…");
+        $advert->setImage($image);
 
         $listSkills = $manager->getRepository('OCPlatformBundle:Skill')->findAll();
 

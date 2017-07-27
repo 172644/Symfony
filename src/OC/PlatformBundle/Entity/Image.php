@@ -59,6 +59,14 @@ class Image
      */
     private $updatedAt;
 
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAtNow()
+    {
+        $this->updatedAt = new \Datetime();
+    }
+
     protected function getUploadRootDir()
     {
         // On retourne le chemin relatif vers l'image pour notre code PHP
