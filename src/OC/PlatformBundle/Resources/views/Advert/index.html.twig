@@ -4,6 +4,10 @@
     Accueil - {{ parent() }}
 {% endblock %}
 
+{% block titlePage %}
+    Liste des annonces
+{% endblock %}
+
 {% block ocplatform_body %}
     <p>
     {% for message in app.session.flashbag.get('info') %}
@@ -11,16 +15,21 @@
     {% endfor %}
     </p>
 
-    <h2>Liste des annonces</h2>
-
-    <ul>
+    <ul class="collection">
         {% for advert in listAdverts %}
-            <li>
-                <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
-                    {{ advert.title }}
-                </a>
-                par {{ advert.author.username }},
-                le {{ advert.date|date('d/m/Y') }}
+            <li class="collection-item avatar">
+
+                    {% if advert.image is not null %}
+                        <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
+                            <img src="{{ asset(advert.image.webPath) }}" alt="" class="circle">
+                        </a>
+                    {% endif %}
+                    <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
+                        <span class="title">{{ advert.title }}</span>
+                    </a>
+                    <p>
+                        By {{ advert.author.username }} - {{ advert.date|date('d/m/Y') }}
+                    </p>
             </li>
         {% else %}
             <li>Pas (encore !) d'annonces</li>

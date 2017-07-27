@@ -22,7 +22,7 @@ class ApplicationType extends AbstractType
     {
         $builder
             ->add('content', TextareaType::class)
-            ->add('save',      SubmitType::class);
+            ->add('Postuler',      SubmitType::class);
     }
 
     /**

@@ -280,15 +280,15 @@ class AdvertController extends Controller
 
         $listMenu = array(array('url' => $this->generateUrl('oc_platform_home'), 'title' => 'Accueil'));
 
-        //if($userRoles != null && in_array('ROLE_AUTEUR', $userRoles))
+        if($userRoles != null && in_array('ROLE_AUTEUR', $userRoles))
             array_push($listMenu, array('url' => $this->generateUrl('oc_platform_add'), 'title' => 'Ajouter une annonce'));
 
-        array_push($listMenu, array('url' => $this->generateUrl('oc_platform_oldhome'), 'title' => 'Old Index - [Lien dynamique avec recupération session]'));
-        array_push($listMenu, array('url' => $this->generateUrl('oc_platform_view_json'), 'title' => 'GetJson'));
-        array_push($listMenu, array('url' => $this->generateUrl('oc_platform_session'), 'title' => 'SetSession'));
-
-        //if($userRoles != null && in_array('ROLE_USER', $userRoles))
-            array_push($listMenu, array('url' => $this->generateUrl('oc_platform_hello'), 'title' => 'Hello world'));
+//        array_push($listMenu, array('url' => $this->generateUrl('oc_platform_oldhome'), 'title' => 'Old Index - [Lien dynamique avec recupération session]'));
+//        array_push($listMenu, array('url' => $this->generateUrl('oc_platform_view_json'), 'title' => 'GetJson'));
+//        array_push($listMenu, array('url' => $this->generateUrl('oc_platform_session'), 'title' => 'SetSession'));
+//
+//        //if($userRoles != null && in_array('ROLE_USER', $userRoles))
+//            array_push($listMenu, array('url' => $this->generateUrl('oc_platform_hello'), 'title' => 'Hello world'));
 
         return $this->render('OCPlatformBundle:Advert:menu.html.twig', array(
             'listMenu' => $listMenu
