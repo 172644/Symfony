@@ -54,3 +54,7 @@ input.form-control {
     overflow: hidden;
     margin-top: 10px;
 }
+
+#menu {
+    padding-right: 0;
+}

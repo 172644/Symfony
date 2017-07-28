@@ -38,4 +38,4 @@ security:
 
   access_control:
     - { path: ^/admin, ip: 127.0.0.1, requires_channel: https }
-    #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+    #- { path: ^/admin/?((?!login|/login)([a-z0-9/]+))?$, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
