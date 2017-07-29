@@ -17,37 +17,49 @@
 </head>
 
 <body>
-<div class="container" style="width:100%; padding: 0">
+    <div class="container" style="width:99%; max-width: none">
+
+
+
         <ul id="dropdown1" class="dropdown-content">
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                <li><a href="{{ path('fos_user_security_logout') }}">logout</a></li>
-                <li><a href="{{ path('fos_user_profile_edit') }}">edit profil</a></li>
-            {% else %}
-                <li><a href="{{ path('fos_user_security_login') }}">login</a></li>
-                <li><a href="{{ path('fos_user_registration_register') }}">register</a></li>
-            {% endif %}
+            {% block dropdownMenu %}
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li><a href="{{ path('fos_user_profile_edit') }}">Mon profil</a></li>
+                    <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                {% else %}
+                    <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                    <li><a href="{{ path('fos_user_registration_register') }}">Incription</a></li>
+                {% endif %}
+            {% endblock %}
         </ul>
-        <nav style="background-color: #444444">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">apps</i></a>
             <div class="nav-wrapper">
-                <div class="col-md-2 menu-head">
+                <div class="menu-head">
                     <a href="#!" class="brand-logo">
-                        <span style="font-size: 22px;">OC-PLATFORM</span>
+                        <span class="title-head">OC-PLATFORM</span>
                     </a>
                 </div>
-                <ul class="right hide-on-med-and-down">
+                <ul class="right">
+                {#<ul class="right hide-on-med-and-down">#}
                     {#<li><a href="sass.html">Sass</a></li>#}
                     {#<li><a href="badges.html">Components</a></li>#}
                     <!-- Dropdown Trigger -->
                     <li>
                         <a class="dropdown-button" href="#!" data-activates="dropdown1">
-                            <span class="user-dropdown">
-                                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <span class="user-dropdown chip">
+                                {% if app.user.image is not defined or app.user.image is null %}
+                                    <img src="{{ asset('/Symfony/web/uploads/anon_user.png') }}" class="circle"/>
+                                {% else %}
+                                    <img src="{{ asset(app.user.image) }}" class="circle"/>
+                                {% endif %}
+                                {% if is_granted("IS_AUTHENTICATED_FULLY") %}
                                     {{ app.user.username }}
                                 {% else %}
                                     visitor
                                 {% endif %}
-                                <i class="material-icons">more_vert</i>
                             </span>
+                            <i class="material-icons">view_headline</i>
                         </a>
                     </li>
                 </ul>
@@ -55,27 +67,20 @@
         </nav>
 
     <div class="row">
-        <div id="menu" class="col-md-2"">
-            <div class="menu-span">--- MENU GENERAL ---</div>
-            {{ render(controller("OCPlatformBundle:Advert:menu")) }}
+        <div id="menu">
+            {#<ul class="nav nav-pills nav-stacked">#}
+            <ul id="slide-out" class="nav nav-pills nav-stacked side-nav fixed">
+                {% block menu %}
 
+                <div class="menu-span">--- MENU GENERAL ---</div>
+                {% include('OCCoreBundle:layout:menu_layout.html.twig') %}
 
-            <div class="menu-span">--- Dernières annonces ---</div>
-            {{ render(controller("OCPlatformBundle:Advert:lastAnnonce", {'limit': 3})) }}
-
-            {% if is_granted('ROLE_SEARCH') %}
-                <div class="menu-span">--- Mes applications ---</div>
-                {{ render(controller("OCPlatformBundle:Advert:lastApplication", {'user': app.user})) }}
-            {% endif %}
-
-            {% if is_granted('ROLE_AUTEUR') %}
-                <div class="menu-span">--- Mes annonces ---</div>
-                {{ render(controller("OCPlatformBundle:Advert:lastAdvert", {'user': app.user})) }}
-            {% endif %}
+                {% endblock %}
+            </ul>
 
 
         </div>
-        <div id="content" class="col-md-9">
+        <div id="content">
 
             <div class="well title-page">
                 <span>{% block titlePage %}{% endblock %}</span>
@@ -103,6 +108,7 @@
     <script>
         $( document ).ready(function() {
             console.log( "ready!" );
+            $(".button-collapse").sideNav();
             $(".dropdown-button").dropdown({
                 inDuration: 400,
                 outDuration: 350,

@@ -1,25 +1,22 @@
 {% extends "OCPlatformBundle::layout.html.twig" %}
 
 {% block title %}
-    Modifier une annonce - {{ parent() }}
+    Modifier - {{ parent() }}
+{% endblock %}
+
+{% block titlePage %}
+    Modifier "{{ advert.title }}"
 {% endblock %}
 
 {% block ocplatform_body %}
 
-    <h2>Modifier une annonce</h2>
+    <p>
+        <a href="{{ path('oc_platform_view', {'id': advert.id}) }}" class="btn btn-default">
+            <i class="Tiny material-icons">arrow_back</i> <span>Retour</span>
+        </a>
+    </p>
 
     {{ include("OCPlatformBundle:Advert:form.html.twig") }}
 
-    <p>
-        Vous éditez une annonce déjà existante, merci de ne pas changer
-        l'esprit général de l'annonce déjà publiée.
-    </p>
-
-    <p>
-        <a href="{{ path('oc_platform_view', {'id': advert.id}) }}" class="btn btn-default">
-            <i class="glyphicon glyphicon-chevron-left"></i>
-            Retour à l'annonce
-        </a>
-    </p>
 
 {% endblock %}

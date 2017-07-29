@@ -60,7 +60,9 @@
 
             <div class="col-sm-10">
                 {{ form_widget(form.categories_) }}
-                <a href="#" id="add_category" class="btn btn-default">Ajouter une catégorie inéxistante</a>
+                <a href="#" id="add_category" class="btn btn-default">
+                    Ajouter une catégorie inéxistante
+                </a>
             </div>
         </div>
     {% endif %}
@@ -90,7 +92,16 @@
         <span class="col-sm-2 control-label"> </span>
 
         <div class="col-sm-10">
-            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+            {{ form_widget(form.sauvegarder, {'attr': {'class': 'btn btn-default'}}) }}
+            {% if advert.id is defined and advert.id is not null %}
+                <a href="{{ path('oc_platform_view', {'id': advert.id}) }}" class="btn btn-default">
+                    <i class="Tiny material-icons">cancel</i> <span> Annuler</span>
+                </a>
+            {% else %}
+                <a href="{{ path('oc_platform_home') }}" class="btn btn-default">
+                    <i class="Tiny material-icons">cancel</i> <span> Annuler</span>
+                </a>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -139,7 +150,7 @@
 
         function addDeleteLink($prototype)
         {
-            var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+            var $deleteLink = $('<a href="#" class="btn btn-danger"><i class="Tiny material-icons">delete_sweep</i>Supprimer</a>');
             $prototype.append($deleteLink);
             $deleteLink.click(function(e)
             {

@@ -1,7 +1,42 @@
 {% extends "OCCoreBundle::layout.html.twig" %}
 
 {% block title %}
-    Annonces - {{ parent() }}
+    Annonce
+{% endblock %}
+
+{% block menu %}
+
+    {{ parent() }}
+    <hr>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="menu-span">--- Platform menu ---</div>
+        {% if is_granted("ROLE_AUTEUR") %}
+            <li>
+                <a href="{{ path('oc_platform_add') }}">
+                    <i class="material-icons">add_circle</i>
+                    Créer une annonce
+                </a>
+            </li>
+            <hr>
+        {% endif %}
+
+        <div class="menu-span">--- Dernières annonces ---</div>
+        {{ render(controller("OCPlatformBundle:Advert:lastAnnonce", {'limit': 3})) }}
+        <hr>
+    {% endif %}
+
+    {% if is_granted('ROLE_SEARCH') %}
+        <div class="menu-span">--- Mes dernières applications ---</div>
+        {{ render(controller("OCPlatformBundle:Advert:lastApplication", {'user': app.user})) }}
+        <hr>
+    {% endif %}
+
+    {% if is_granted('ROLE_AUTEUR') %}
+        <div class="menu-span">--- Mes dernières  annonces ---</div>
+        {{ render(controller("OCPlatformBundle:Advert:lastAdvert", {'user': app.user})) }}
+        <hr>
+    {% endif %}
 {% endblock %}
 
 {% block body %}

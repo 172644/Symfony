@@ -1,16 +1,15 @@
 {% extends "OCPlatformBundle::layout.html.twig" %}
 
+{% block titlePage %}
+    Ajouter une annonce
+{% endblock %}
+
+{% block title %}
+    Créer - {{ parent() }}
+{% endblock %}
+
 {% block body %}
 
-    <div class="well">
-        <span>Ajouter une annonce</span>
-    </div>
-
     {{ include("OCPlatformBundle:Advert:form.html.twig") }}
-
-    <p>
-        Attention : cette annonce sera ajoutée directement
-        sur la page d'accueil après validation du formulaire.
-    </p>
 
 {% endblock %}

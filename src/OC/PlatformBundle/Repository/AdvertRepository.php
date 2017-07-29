@@ -37,6 +37,9 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
             ->addSelect('img')
             ->getQuery();
 
+        $qb->setFirstResult(($page-1) * $nbPerPage)
+            ->setMaxResults($nbPerPage);
+
         return new Paginator($qb, true);
     }
     public function getAdvertsWithoutApplication($day)

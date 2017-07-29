@@ -1,0 +1,35 @@
+
+<li>
+    <a href="{{ path('oc_core_homepage') }}">
+        <i class="material-icons">home</i>
+        Accueil
+    </a>
+</li>
+<li>
+    <a href="{{ path('oc_platform_home') }}">
+        <i class="material-icons">spa</i>
+        Platform
+    </a>
+</li>
+
+{% if is_granted("IS_AUTHENTICATED_FULLY") %}
+    <li>
+        <a href="{{ path('fos_user_profile_edit') }}">
+            <i class="material-icons">person</i>
+            Profil
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('fos_user_security_logout') }}">
+            <i class="material-icons">power_settings_new</i>
+            Déconnexion
+        </a>
+    </li>
+{% else %}
+    <li>
+        <a href="{{ path('fos_user_security_login') }}">
+            <i class="material-icons">power_settings_new</i>
+            Connexion
+        </a>
+    </li>
+{% endif %}

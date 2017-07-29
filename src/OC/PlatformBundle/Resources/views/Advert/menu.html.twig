@@ -1,36 +1,17 @@
-<ul class="nav nav-pills nav-stacked">
-    {% if listAdverts is defined %}
-        {% if listAdverts|length >= 1 %}
-            {% for advert in listAdverts %}
-                <li>
-                    <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
-                        {% if showNumber is defined %}
-                            {{ advert.title ~ " [" ~ advert.nbApplications ~ "]" }}
-                        {%  else %}
-                            {{ advert.title }}
-                        {% endif %}
-                    </a>
-                </li>
-            {% endfor %}
-        {% else %}
-            <div class="menu-span">[ AUCUNE ]</div>
-        {% endif %}
-    {% endif %}
 
-    {% if listMenu is defined %}
-        {% for menu in listMenu %}
+{% if listAdverts is defined %}
+    {% if listAdverts|length >= 1 %}
+        {% for advert in listAdverts %}
             <li>
-                <a href="{{ menu.url }}">
-                    {{ menu.title }}
+                <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
+                    {% if showNumber is defined %}
+                        <div class="notif-number">{{ advert.nbApplications }}</div>
+                    {% endif %}
+                    {{ advert.title }}
                 </a>
             </li>
         {% endfor %}
-
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            <li><a href="{{ path('fos_user_profile_edit') }}">Profil</a></li>
-            <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
-        {% else %}
-            <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
-        {% endif %}
+    {% else %}
+        <div class="menu-span">[ AUCUNE ]</div>
     {% endif %}
-</ul>
+{% endif %}

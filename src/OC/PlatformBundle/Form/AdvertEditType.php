@@ -28,11 +28,11 @@ class AdvertEditType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->remove('save',      SubmitType::class)
+        $builder->remove('sauvegarder',      SubmitType::class)
             ->remove('date')
             ->remove('image',     ImageType::class)
             ->add('image',     ImageEditType::class)
-            ->add('save',      SubmitType::class);
+            ->add('sauvegarder',      SubmitType::class);
 
     }
 

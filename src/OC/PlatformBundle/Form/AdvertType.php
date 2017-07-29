@@ -66,7 +66,7 @@ class AdvertType extends AbstractType
                     return $repository->getLikeQueryBuilder($pattern);
                 }*/
             ))//*/
-            ->add('save',      SubmitType::class);
+            ->add('sauvegarder',      SubmitType::class);
 
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA,    // 1er argument : L'évènement qui nous intéresse : ici, PRE_SET_DATA
