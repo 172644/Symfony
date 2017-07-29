@@ -1,0 +1,24 @@
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    Réinitialisation - {{ siteName }}
+{% endblock %}
+
+{% block titlePage %}
+    Mot de passe oublié
+{% endblock %}
+
+{% block body %}
+    <div>
+        {% if error is defined %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        <form action="{{ path('core_user_forget_pass') }}" method="post" >
+            <div>
+                <label for="email">Email d'inscription</label>
+                <input type="email" id="email" name="_email" placeholder="email"/>
+            </div>
+            <button type="submit">Valider</button>
+        </form>
+    </div>
+{% endblock %}

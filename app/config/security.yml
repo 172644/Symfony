@@ -1,41 +1,46 @@
 # To get started with security, check out the documentation:
 # https://symfony.com/doc/current/security.html
 security:
-  encoders:
-    OC\UserBundle\Entity\User: sha512
+    encoders:
+        OC\CoreBundle\Entity\User: bcrypt
 
-  role_hierarchy:
-    # Un admin hérite des droits d'auteur et de modérateur
-    ROLE_ADMIN:       [ROLE_AUTEUR, ROLE_MODERATEUR]
-    # On garde ce rôle superadmin, il nous resservira par la suite
-    ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+    role_hierarchy:
+        ROLE_MODERATEUR:  [ROLE_SEARCH, ROLE_AUTEUR]
+        ROLE_ADMIN:       [ROLE_AUTEUR, ROLE_MODERATEUR]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
-  providers:
-    main:
-      id: fos_user.user_provider.username_email
+    providers:
+        userProvider:
+            entity:
+                class: OCCoreBundle:User
 
-  firewalls:
-    dev:
-      pattern: ^/(_(profiler|wdt)|css|images|js)/
-      security: false
-    main_login:
-      # Cette expression régulière permet de prendre /login (mais pas /login_check !)
-      pattern:   ^/(login|register|traduction)/?$
-      anonymous: true # On autorise alors les anonymes sur ce pare-feu
-      provider:  main # On change cette valeur
-    main:
-      pattern:   ^/
-      anonymous: false
-      provider:  main # On change cette valeur
-      form_login:
-        login_path: fos_user_security_login
-        check_path: fos_user_security_check
-      logout:
-        path:       fos_user_security_logout
-        target:     fos_user_security_login
-      remember_me:
-        secret:     %secret% # %secret% est un paramètre de parameter
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main_login:
+            pattern:   ^/(login|register|forget|activate|reset)/?$
+            anonymous: true
+            provider:  userProvider
+        main:
+            pattern:   ^/
+            anonymous: false
+            provider:  userProvider
+            form_login:
+                login_path: core_user_login
+                check_path: core_user_login_check
+                default_target_path: oc_core_homepage
+            logout:
+                path:       core_user_logout
+                target:     core_user_login
+            remember_me:
+                secret:     %secret% # %secret% est un paramètre de parameter
 
-  access_control:
-    - { path: ^/admin, ip: 127.0.0.1, requires_channel: https }
-    #- { path: ^/admin/?((?!login|/login)([a-z0-9/]+))?$, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+    access_control:
+        - { path: ^/login/?$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/forget, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/activate/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/reset/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, ip: 127.0.0.1, requires_channel: https }
+        #- { path: ^/admin/?((?!login|/login)([a-z0-9/]+))?$, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

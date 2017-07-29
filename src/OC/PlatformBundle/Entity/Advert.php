@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use OC\PlatformBundle\Validator\Antiflood;
-use OC\UserBundle\Entity\User;
+use OC\CoreBundle\Entity\User;
 
 
 /**
@@ -48,7 +48,7 @@ class Advert
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="OC\UserBundle\Entity\User", inversedBy="adverts")
+     * @ORM\ManyToOne(targetEntity="OC\CoreBundle\Entity\User", inversedBy="adverts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;

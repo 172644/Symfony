@@ -7,3 +7,29 @@ oc_core_contact:
     path:      /contact
     defaults:
         _controller: OCCoreBundle:Default:contact
+
+core_user_register:
+    path:     /register
+    defaults: { _controller: OCCoreBundle:User:register }
+
+core_user_login:
+    path:     /login
+    defaults: { _controller: OCCoreBundle:User:login }
+
+core_user_login_check:
+    path:     /login_check
+
+core_user_logout:
+    path:     /logout
+
+core_user_activate:
+    path:     /activate/{token}
+    defaults: { _controller: OCCoreBundle:User:activate }
+
+core_user_forget_pass:
+    path:     /forget
+    defaults: { _controller: OCCoreBundle:User:forget }
+
+core_user_reset:
+    path:     /reset/{token}
+    defaults: { _controller: OCCoreBundle:User:reset }

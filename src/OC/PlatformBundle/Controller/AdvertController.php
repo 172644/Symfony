@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\Image;
 use OC\PlatformBundle\Entity\Application;
-use OC\UserBundle\Entity\User;
+use OC\CoreBundle\Entity\User;
 use OC\PlatformBundle\Entity\Category;
 use OC\PlatformBundle\Entity\AdvertSkill;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -128,7 +128,7 @@ class AdvertController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $advert = new Advert();
-        $user = $em->getRepository("OCUserBundle:User")->findOneBy(array('username' => $this->getUser()->getUsername()));
+        $user = $em->getRepository("OCCoreBundle:User")->findOneBy(array('username' => $this->getUser()->getUsername()));
         $advert->setAuthor($user);
         $categories = $em->getRepository('OCPlatformBundle:Category')->findAll();
         $form = $this->createForm(AdvertType::class, $advert, ['entityManager' => $categories]);
@@ -140,7 +140,7 @@ class AdvertController extends Controller
             $this->get('event_dispatcher')->dispatch(PlatformEvents::POST_MESSAGE, $event);
             $advert->setContent($event->getMessage());
 
-            $advert->setAuthor($em->getRepository("OCUserBundle:User")->findOneBy(array('username' => $this->getUser()->getUsername())));
+            $advert->setAuthor($em->getRepository("OCCoreBundle:User")->findOneBy(array('username' => $this->getUser()->getUsername())));
 
             $em->persist($advert);
             $em->flush();

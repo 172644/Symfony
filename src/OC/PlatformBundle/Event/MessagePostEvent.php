@@ -4,7 +4,7 @@
 namespace OC\PlatformBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
-use OC\UserBundle\Entity\User;
+use OC\CoreBundle\Entity\User;
 
 class MessagePostEvent extends Event
 {

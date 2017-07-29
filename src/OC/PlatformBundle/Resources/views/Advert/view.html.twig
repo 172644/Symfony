@@ -74,7 +74,7 @@
                                 {% for app in listApplications %}
                                     <tr>
                                         <td>{{ app.date|date("H:i m/d/Y") }}</td>
-                                        <td>{{ app.author }}</td>
+                                        <td>{{ app.author.username }}</td>
                                         <td>{{ app.content }}</td>
                                     </tr>
                                 {% endfor %}

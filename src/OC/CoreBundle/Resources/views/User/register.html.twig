@@ -1,0 +1,17 @@
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    Inscription - {{ siteName }}
+{% endblock %}
+
+{% block titlePage %}
+    Inscription
+{% endblock %}
+
+{% block body %}
+    {% if message is defined %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endif %}
+
+    {{ form(form) }}
+{% endblock %}

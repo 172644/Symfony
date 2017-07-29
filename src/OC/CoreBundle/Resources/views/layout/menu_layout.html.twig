@@ -13,23 +13,29 @@
 </li>
 
 {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+    {#<li>#}
+        {#<a href="{{ path('fos_user_profile_edit') }}">#}
+            {#<i class="material-icons">person</i>#}
+            {#Profil#}
+        {#</a>#}
+    {#</li>#}
     <li>
-        <a href="{{ path('fos_user_profile_edit') }}">
-            <i class="material-icons">person</i>
-            Profil
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('fos_user_security_logout') }}">
+        <a href="{{ path('core_user_logout') }}">
             <i class="material-icons">power_settings_new</i>
             Déconnexion
         </a>
     </li>
 {% else %}
     <li>
-        <a href="{{ path('fos_user_security_login') }}">
+        <a href="{{ path('core_user_login') }}">
             <i class="material-icons">power_settings_new</i>
             Connexion
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('core_user_register') }}">
+            <i class="material-icons">open_in_browser</i>
+            Inscription
         </a>
     </li>
 {% endif %}

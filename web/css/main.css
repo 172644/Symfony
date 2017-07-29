@@ -1,7 +1,7 @@
 body { padding-top: 60px; }
 
 .title-head {
-    font-size: 40px;
+    font-size: 35px;
     color: #44968f;
     font-family: fantasy;
     padding: 0 5px;
@@ -10,6 +10,11 @@ body { padding-top: 60px; }
     display: block;
     text-align: center;
     border-right: solid 1px #272b30;
+}
+.title-head img {
+    max-height: 30px;
+    margin-right: 10px;
+    vertical-align: -1px;
 }
 
 #menu #slide-out {

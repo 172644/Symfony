@@ -3,7 +3,7 @@
 namespace OC\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use OC\UserBundle\Entity\User;
+use OC\CoreBundle\Entity\User;
 
 /**
  * @ORM\Table(name="oc_application")
@@ -20,7 +20,7 @@ class Application
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OC\UserBundle\Entity\User", inversedBy="applications")
+     * @ORM\ManyToOne(targetEntity="OC\CoreBundle\Entity\User", inversedBy="applications")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;

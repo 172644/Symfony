@@ -8,7 +8,7 @@ use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\Application;
 use OC\PlatformBundle\Entity\AdvertSkill;
 use OC\PlatformBundle\Entity\Image;
-use OC\UserBundle\Entity\User;
+use OC\CoreBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -24,33 +24,31 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
     public function load(ObjectManager $manager)
     {
         $userList = array(
-            array('admin',  'admin@symfony.com',    'admin',    array('ROLE_ADMIN')),
+            array('superadmin', 'admin' ,'admin',   'superadmin@symfony.com',   'superadmin',   'UID1', array('ROLE_SUPER_ADMIN')),
+            array('admin',      'admin' ,'admin',   'admin@symfony.com',        'admin',        'UID2', array('ROLE_ADMIN')),
 
-            array('erwan',  '172644@supinfo.com',   '1994',     array('ROLE_AUTEUR')),
-            array('user',   'user@symfony.com',     'user',     array('ROLE_AUTEUR')),
+            array('sazer',      'Erwan' ,'Locart',  '172644@supinfo.com',       '19941994aA',   'UID3', array('ROLE_AUTEUR')),
+            array('user',       'user'  ,'user',    'user@symfony.com',         'user',         'UID4', array('ROLE_AUTEUR')),
 
-            array('Jean',   'Jean@symfony.com',     'Jean',     array('ROLE_SEARCH')),
-            array('test',   'test@symfony.com',     'test',     array('ROLE_SEARCH')),
-            array('Marine', 'marine@symfony.com',   'Marine',   array('ROLE_SEARCH')),
-            array('Pierre', 'Pierre@symfony.com',   'Pierre',   array('ROLE_SEARCH')),
+            array('Jean',       'Jean'  ,'Doe',     'Jean@symfony.com',         'Jean',         'UID5', array('ROLE_SEARCH')),
+            array('test',       'test'  ,'test',    'test@symfony.com',         'test',         'UID6', array('ROLE_SEARCH')),
+            array('Marine',     'Marine','Dupont',  'marine@symfony.com',       'Marine',       'UID7', array('ROLE_SEARCH')),
+            array('Pierre',     'Pierre','Loyu',    'Pierre@symfony.com',       'Pierre',       'UID8', array('ROLE_SEARCH')),
         );
-
-        // Get our userManager, you must implement `ContainerAwareInterface`
-        $userManager = $this->container->get('fos_user.user_manager');
 
         foreach ($userList as $_user) {
 
-            // Create our user and set details
-            $user = $userManager->createUser();
+            $user = new User();
             $user->setUsername($_user[0]);
-            $user->setEmail($_user[1]);
-
+            $user->setFirstname($_user[1]);
+            $user->setLastname($_user[2]);
+            $user->setActive(1);
+            $user->setUid($_user[5]);
             $encoder = $this->container->get('security.password_encoder');
-            $password = $encoder->encodePassword($user, $_user[2]);
-            $user->setPassword($password);
-
-            $user->setEnabled(true);
-            $user->setRoles($_user[3]);
+            $encodedPass = $encoder->encodePassword($user, $_user[4]);
+            $user->setPassword($encodedPass);
+            $user->setEmail($_user[3]);
+            $user->setRoles($_user[6]);
 
             $manager->persist($user);
         }
@@ -58,7 +56,7 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
         $manager->flush();
 
 
-        $userManager = $manager->getRepository('OCUserBundle:User');
+        $userManager = $manager->getRepository('OCCoreBundle:User');
         $uploadPath = './web/uploads/';
 
         $dossier=opendir($uploadPath);
@@ -90,7 +88,7 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
 
         $advert = new Advert();
         $advert->setTitle('Recherche développeur Symfony.');
-        $advert->setAuthor($userManager->findOneBy(array('username' => 'erwan')));
+        $advert->setAuthor($userManager->findOneBy(array('username' => 'sazer')));
         $advert->setContent("Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…");
         $advert->setImage($image);
 
@@ -129,7 +127,7 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
 
         $advert = new Advert();
         $advert->setTitle('Mission de webmaster');
-        $advert->setAuthor($userManager->findOneBy(array('username' => 'erwan')));
+        $advert->setAuthor($userManager->findOneBy(array('username' => 'sazer')));
         $advert->setContent("Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…");
         $advert->setImage($image);
 

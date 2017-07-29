@@ -24,11 +24,11 @@
         <ul id="dropdown1" class="dropdown-content">
             {% block dropdownMenu %}
                 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                    <li><a href="{{ path('fos_user_profile_edit') }}">Mon profil</a></li>
-                    <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                    {#<li><a href="{{ path('fos_user_profile_edit') }}">Mon profil</a></li>#}
+                    <li><a href="{{ path('core_user_logout') }}">Déconnexion</a></li>
                 {% else %}
-                    <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
-                    <li><a href="{{ path('fos_user_registration_register') }}">Inscription</a></li>
+                    <li><a href="{{ path('core_user_login') }}">Connexion</a></li>
+                    <li><a href="{{ path('core_user_register') }}">Inscription</a></li>
                 {% endif %}
             {% endblock %}
         </ul>
@@ -37,7 +37,7 @@
             <div class="nav-wrapper">
                 <div class="menu-head">
                     <a href="#!" class="brand-logo">
-                        <span class="title-head">OC-PLATFORM</span>
+                        <span class="title-head"><img src="{{ asset('assets/logo.png') }}"/>PLATFORM</span>
                     </a>
                 </div>
                 <ul class="right">
