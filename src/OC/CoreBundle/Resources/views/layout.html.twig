@@ -28,7 +28,7 @@
                     <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
                 {% else %}
                     <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
-                    <li><a href="{{ path('fos_user_registration_register') }}">Incription</a></li>
+                    <li><a href="{{ path('fos_user_registration_register') }}">Inscription</a></li>
                 {% endif %}
             {% endblock %}
         </ul>
@@ -49,7 +49,7 @@
                         <a class="dropdown-button" href="#!" data-activates="dropdown1">
                             <span class="user-dropdown chip">
                                 {% if app.user.image is not defined or app.user.image is null %}
-                                    <img src="{{ asset('/Symfony/web/uploads/anon_user.png') }}" class="circle"/>
+                                    <img src="{{ asset('uploads/anon_user.png') }}" class="circle"/>
                                 {% else %}
                                     <img src="{{ asset(app.user.image) }}" class="circle"/>
                                 {% endif %}

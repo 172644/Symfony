@@ -59,8 +59,6 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
 
 
         $userManager = $manager->getRepository('OCUserBundle:User');
-
-        $imgFixtures = array('597a07ea82758396195558.jpg', '597a086f52a67895511418.jpg', '597a088bacab4750779183.jpg');
         $uploadPath = './web/uploads/';
 
         $dossier=opendir($uploadPath);
@@ -74,9 +72,15 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
         }
         closedir($dossier);
 
-        copy($uploadPath.'imgFixtures/'.$imgFixtures[0], $uploadPath.$imgFixtures[0]);
-        copy($uploadPath.'imgFixtures/'.$imgFixtures[1], $uploadPath.$imgFixtures[1]);
-        copy($uploadPath.'imgFixtures/'.$imgFixtures[2], $uploadPath.$imgFixtures[2]);
+        $dossier=opendir($uploadPath.'imgFixtures/');
+        while ($File = readdir($dossier))
+        {
+            if ($File != "." && $File != "..")
+            {
+                copy($uploadPath.'imgFixtures/'.$File, $uploadPath.$File);
+            }
+        }
+        closedir($dossier);
         /////////////////////////////////////////////////////////////////////////////////////////
 
         $image = new Image();
