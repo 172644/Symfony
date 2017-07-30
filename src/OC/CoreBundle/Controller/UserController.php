@@ -20,6 +20,13 @@ class UserController extends Controller
         ));
     }
 
+    public function viewAction(User $user, $id){
+
+        return $this->render('OCCoreBundle:User:profil.html.twig', array(
+            'user'=>$user
+        ));
+    }
+
 
 
 

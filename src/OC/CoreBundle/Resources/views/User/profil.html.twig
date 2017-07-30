@@ -1,0 +1,89 @@
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    Profil - {{ siteName }}
+{% endblock %}
+
+{% block titlePage %}
+    Profil de {{ user.fullname }}
+{% endblock %}
+
+{% block body %}
+    <div class="panel panel-info">
+        <div class="panel-body">
+            {% if user.image is not defined or user.image is null %}
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="{{ user.username }} image" src="{{ asset('uploads/anon_user.png') }}" class="img-responsive"> </div>
+            {% else %}
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="{{ user.username }} image" src="{{ asset(user.image.webPath) }}" class="img-responsive"> </div>
+            {% endif %}
+
+            <div class=" col-md-9 col-lg-9 ">
+                <table class="table table-user-information">
+                    <tbody>
+                        <tr>
+                            <td>Pseudo :</td>
+                            <td>{{ user.username }}</td>
+                        </tr>
+                        <tr>
+                            <td>Email :</td>
+                            <td><a href="mailto: {{ user.email }}">{{ user.email }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Rôle :</td>
+                            <td>
+                                {% for _role in user.roles %}
+                                    {% for param_role in security_roles %}
+                                        {% if param_role.val == _role %}
+                                            <span class="label label-{{ param_role.color }}">{{ param_role.str }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Nom :</td>
+                            <td>{{ user.lastname }}</td>
+                        </tr>
+                        <tr>
+                            <td>Prénom :</td>
+                            <td>{{ user.firstname }}</td>
+                        </tr>
+                        <tr>
+                            <td>Nom complet :</td>
+                            <td>{{ user.fullname }}</td>
+                        </tr>
+                        <tr>
+                            <td>Date d'inscription :</td>
+                            <td>{{ user.createdAt|date('d/m/Y H:m:s') }}</td>
+                        </tr>
+                        <tr>
+                            <td>Mise à jour du profil :</td>
+                            <td>{{ user.updatedAt|date('d/m/Y H:m:s') }}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% if (user == app.user) or (is_granted('ROLE_ADMIN')) %}
+                                    {#{{ path('core_user_edit', {'id': advert.id}) }}#}
+                                    <a href="#" class="btn btn-default">
+                                        <i class="material-icons">edit</i>
+                                        Modifier mes informations
+                                    </a>
+                                {% endif %}
+                            </td>
+                            <td>
+
+                                {% if  (user == app.user) or is_granted('ROLE_ADMIN') %}
+                                    {#{{ path('core_user_delete', {'id': advert.id}) }}#}
+                                    <a href="#" class="btn btn-danger">
+                                        <i class="material-icons">delete</i>
+                                        Supprimer
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

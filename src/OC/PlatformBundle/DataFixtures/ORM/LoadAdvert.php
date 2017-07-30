@@ -5,6 +5,7 @@ namespace OC\PlatformBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use OC\PlatformBundle\Entity\Advert;
+use OC\PlatformBundle\Entity\Category;
 use OC\PlatformBundle\Entity\Application;
 use OC\PlatformBundle\Entity\AdvertSkill;
 use OC\PlatformBundle\Entity\Image;
@@ -81,9 +82,28 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
         closedir($dossier);
         /////////////////////////////////////////////////////////////////////////////////////////
 
+        $names = array(
+            'Développement web',
+            'Développement mobile',
+            'Graphisme',
+            'Intégration',
+            'Réseau'
+        );
+
+        foreach ($names as $name) {
+            $category = new Category();
+            $category->setName($name);
+
+            $manager->persist($category);
+        }
+        $manager->flush();
+
+        $categoryManager = $manager->getRepository('OCPlatformBundle:Category');
+
+        /////////////////////////////////////////////////////////////////////////////////////////
+
         $image = new Image();
         $image->setImageName('597a07ea82758396195558.jpg');
-        $image->setImageSize(5355);
         $image->setUpdatedAtNow();
 
         $advert = new Advert();
@@ -91,6 +111,9 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
         $advert->setAuthor($userManager->findOneBy(array('username' => 'sazer')));
         $advert->setContent("Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…");
         $advert->setImage($image);
+        $advert->addCategory($categoryManager->findOneBy(array('name' => 'Développement web')));
+        $advert->addCategory($categoryManager->findOneBy(array('name' => 'Intégration')));
+        $advert->addCategory($categoryManager->findOneBy(array('name' => 'Graphisme')));
 
         $manager->persist($advert);
 
@@ -122,7 +145,6 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
 
         $image = new Image();
         $image->setImageName('597a086f52a67895511418.jpg');
-        $image->setImageSize(16348);
         $image->setUpdatedAtNow();
 
         $advert = new Advert();
@@ -130,6 +152,8 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
         $advert->setAuthor($userManager->findOneBy(array('username' => 'sazer')));
         $advert->setContent("Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…");
         $advert->setImage($image);
+        $advert->addCategory($categoryManager->findOneBy(array('name' => 'Développement web')));
+        $advert->addCategory($categoryManager->findOneBy(array('name' => 'Réseau')));
 
         $application1 = new Application();
         $application1->setAuthor($userManager->findOneBy(array('username' => 'Jean')));
@@ -154,7 +178,6 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
 
         $image = new Image();
         $image->setImageName('597a088bacab4750779183.jpg');
-        $image->setImageSize(62869);
         $image->setUpdatedAtNow();
 
         $advert = new Advert();
@@ -162,6 +185,9 @@ class LoadAdvert implements FixtureInterface, ContainerAwareInterface
         $advert->setAuthor($userManager->findOneBy(array('username' => 'admin')));
         $advert->setContent("Nous proposons un poste pour webdesigner. Blabla…");
         $advert->setImage($image);
+        $advert->addCategory($categoryManager->findOneBy(array('name' => 'Développement web')));
+        $advert->addCategory($categoryManager->findOneBy(array('name' => 'Intégration')));
+        $advert->addCategory($categoryManager->findOneBy(array('name' => 'Graphisme')));
 
         $listSkills = $manager->getRepository('OCPlatformBundle:Skill')->findAll();
 

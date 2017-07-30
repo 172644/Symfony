@@ -41,13 +41,6 @@ class Image
     private $imageFile;
 
     /**
-     * @ORM\Column(type="integer")
-     *
-     * @var integer
-     */
-    private $imageSize;
-
-    /**
      * @ORM\Column(type="string", length=255)
      *
      * @var string
@@ -131,26 +124,6 @@ class Image
     public function getImageName()
     {
         return $this->imageName;
-    }
-
-    /**
-     * @param integer $imageSize
-     *
-     * @return Image
-     */
-    public function setImageSize($imageSize)
-    {
-        $this->imageSize = $imageSize;
-
-        return $this;
-    }
-
-    /**
-     * @return integer|null
-     */
-    public function getImageSize()
-    {
-        return $this->imageSize;
     }
 
     /**

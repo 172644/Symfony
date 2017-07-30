@@ -26,20 +26,23 @@
 
     <div class="well detailAdvert">
         {% if advert.image is not null %}
-                <img src="{{ asset(advert.image.webPath) }}" class="col-md-4"/>
+                <img src="{{ asset(advert.image.webPath) }}" class="materialboxed col-md-4"/>
         {% endif %}
 
         <div class="col-md-8">
-            Par {{ advert.author.username }}, le {{ advert.date|date('d/m/Y') }}
+            Par <a href="{{ path('core_user_profil', {'id': advert.author.id}) }}">{{ advert.author.username }}</a>, le {{ advert.date|date('d/m/Y') }}
             <br />
             <br />
             {{ advert.content }}
+            <br />
+            <br />
 
             {% if not advert.categories.empty %}
                 <p>
-                    Cette annonce est parue dans les catégories suivantes :
+                    Catégories :
                     {% for category in advert.categories %}
-                        {{ category.name }}{% if not loop.last %}, {% endif %}
+                        {#{{ category.name }}{% if not loop.last %}, {% endif %}#}
+                        <span class="label label-{{ bootstrap_color[random(bootstrap_color | keys)] }}">{{ category.name }}</span>
                     {% endfor %}
                 </p>
             {% endif %}
@@ -74,7 +77,7 @@
                                 {% for app in listApplications %}
                                     <tr>
                                         <td>{{ app.date|date("H:i m/d/Y") }}</td>
-                                        <td>{{ app.author.username }}</td>
+                                        <td><a href="{{ path('core_user_profil', {'id': app.author.id}) }}">{{ app.author.username }}</a></td>
                                         <td>{{ app.content }}</td>
                                     </tr>
                                 {% endfor %}

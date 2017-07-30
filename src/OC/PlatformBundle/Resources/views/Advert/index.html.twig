@@ -28,7 +28,7 @@
                         <span class="title">{{ advert.title }}</span>
                     </a>
                     <p>
-                        By {{ advert.author.username }} - {{ advert.date|date('d/m/Y') }}
+                        Par <a href="{{ path('core_user_profil', {'id': advert.author.id}) }}">{{ advert.author.username }}</a> - {{ advert.date|date('d/m/Y') }}
                     </p>
             </li>
         {% else %}

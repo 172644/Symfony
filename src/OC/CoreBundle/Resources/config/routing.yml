@@ -26,6 +26,10 @@ core_user_activate:
     path:     /activate/{token}
     defaults: { _controller: OCCoreBundle:User:activate }
 
+core_user_profil:
+    path:     /profil/{id}
+    defaults: { _controller: OCCoreBundle:User:view }
+
 core_user_forget_pass:
     path:     /forget
     defaults: { _controller: OCCoreBundle:User:forget }

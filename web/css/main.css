@@ -201,3 +201,7 @@ select.form-control:focus, textarea.form-control:focus {
 .brand-logo:hover, .brand-logo:active, .brand-logo:focus {
     text-decoration: none;
 }
+
+table.table.table-user-information {
+    margin: 0;
+}

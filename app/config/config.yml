@@ -41,6 +41,8 @@ twig:
     globals:
         webmaster: "test-author_config.yml"
         siteName: %siteName%
+        security_roles: %security_roles%
+        bootstrap_color: %bootstrap_color%
     form_themes:
         - 'bootstrap_3_layout.html.twig'
 

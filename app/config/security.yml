@@ -6,7 +6,7 @@ security:
 
     role_hierarchy:
         ROLE_MODERATEUR:  [ROLE_SEARCH, ROLE_AUTEUR]
-        ROLE_ADMIN:       [ROLE_AUTEUR, ROLE_MODERATEUR]
+        ROLE_ADMIN:       [ROLE_MODERATEUR]
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:

@@ -11,13 +11,6 @@ parameters:
     database_name: symfony
     database_user: root
     database_password: ~
-    roleUserAuteur:
-        val: ROLE_AUTEUR
-        str: Employeur
-    roleUserConsultant:
-        val: ROLE_SEARCH
-        str: Consultant
-    roleUser: [%roleUserAuteur%, %roleUserConsultant%]
     # You should uncomment this if you want to use pdo_sqlite
     #database_path: '%kernel.project_dir%/var/data/data.sqlite'
 
@@ -31,3 +24,28 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+
+    bootstrap_color: [success,primary,danger,warning,default]
+    roleUserAuteur:
+        val: ROLE_AUTEUR
+        str: Employeur
+        color: Success
+    roleUserConsultant:
+        val: ROLE_SEARCH
+        str: Consultant
+        color: Primary
+    roleModerateur:
+        val: ROLE_MODERATEUR
+        str: Modérateur
+        color: Warning
+    roleAdmin:
+        val: ROLE_ADMIN
+        str: Administrateur
+        color: danger
+    roleSuperAdmin:
+        val: ROLE_SUPER_ADMIN
+        str: Super-Administrateur
+        color: danger
+    roleUser: [%roleUserAuteur%, %roleUserConsultant%]
+    security_roles: [%roleUserAuteur%, %roleUserConsultant%, %roleModerateur%, %roleAdmin%, %roleSuperAdmin%]
