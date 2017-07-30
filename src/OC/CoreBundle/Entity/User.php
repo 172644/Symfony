@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\Application;
 use Doctrine\Common\Collections\ArrayCollection;
+use OC\PlatformBundle\Entity\Image;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -133,6 +134,13 @@ class User implements AdvancedUserInterface
      * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\Application", mappedBy="author")
      */
     private $applications;
+
+    /**
+     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
+     * @Assert\Valid()
+     */
+    private $image;
 
 
     /*********************************
@@ -530,6 +538,33 @@ class User implements AdvancedUserInterface
     {
         return $this->applications;
     }
+
+
+    /**
+     * Set image
+     *
+     * @param \OC\PlatformBundle\Entity\Image $image
+     *
+     * @return User
+     */
+    public function setImage(Image $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+
+    /**
+     * Get image
+     *
+     * @return \OC\PlatformBundle\Entity\Image
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
 
     public function eraseCredentials()
     {

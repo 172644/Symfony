@@ -58,84 +58,99 @@ class UserController extends Controller
 
             if($userToCompare === null)
             {
-                if(!empty($request->get('role')) && in_array($request->get('role'), $validRoles))
-                {
-    //              Initialisation des variables
-                    $dateInSevenDays = new \DateTime();
-                    $dateInSevenDays->add(new \DateInterval('P'.$this->getParameter('tokenExpiration').'D'));
+                $userToCompare = null;
+                $userToCompare = $em->getRepository('OCCoreBundle:User')->findOneBy(array(
+                    'username'=>$user->getUsername()
+                ));
 
-                    $plainPassword = $user->getPassword();
-                    if(strlen($plainPassword) < 6)
+                if($userToCompare === null)
+                {
+                    if(!empty($request->get('role')) && in_array($request->get('role'), $validRoles))
                     {
+        //              Initialisation des variables
+                        $dateInSevenDays = new \DateTime();
+                        $dateInSevenDays->add(new \DateInterval('P'.$this->getParameter('tokenExpiration').'D'));
+
+                        $plainPassword = $user->getPassword();
+                        if(strlen($plainPassword) < 6)
+                        {
+                            return $this->render('OCCoreBundle:User:register.html.twig', array(
+                                'message'=> 'Le mot de passe doit être composé de 6 carractères',
+                                'form'=>$form->createView(),
+                                'roles'=>$arrayRoleUser
+                            ));
+                        }
+                        else if(!preg_match('#[A-Z]#', $plainPassword))
+                        {
+                            return $this->render('OCCoreBundle:User:register.html.twig', array(
+                                'message'=> 'Le mot de passe doit contenir au moins une lettre majuscule',
+                                'form'=>$form->createView(),
+                                'roles'=>$arrayRoleUser
+                            ));
+                        }
+                        else if(!preg_match('#[a-z]#', $plainPassword))
+                        {
+                            return $this->render('OCCoreBundle:User:register.html.twig', array(
+                                'message'=> 'Le mot de passe doit contenir au moins une lettre minuscule',
+                                'form'=>$form->createView(),
+                                'roles'=>$arrayRoleUser
+                            ));
+                        }
+                        else if(!preg_match('#[0-9]#', $plainPassword))
+                        {
+                            return $this->render('OCCoreBundle:User:register.html.twig', array(
+                                'message'=> 'Le mot de passe doit contenir au moins unchiffre',
+                                'form'=>$form->createView(),
+                                'roles'=>$arrayRoleUser
+                            ));
+                        }
+        //                Encodage du MDP
+                        $encoder = $this->get('security.password_encoder');
+                        $encodedPassword = $encoder->encodePassword($user,$plainPassword);
+                        $user->setPassword($encodedPassword);
+        //                Définition du Token d'activation
+                        $user->setToken(hash('sha256', $user->getEmail()));
+                        $user->setTokenExpiredAt($dateInSevenDays);
+        //                Désactivation du compte
+                        $user->setActive(FALSE);
+        //                Définition du role
+                        $user->setRoles(array($request->get('role')));
+        //                Persistance de l'entité
+                        $em->persist($user);
+                        $em->flush();
+        //                Création d'une instance de message
+                        $twig = clone $this->get('twig');
+                        $message = \Swift_Message::newInstance()
+                            ->setSubject('Activation de votre compte')
+                            ->setFrom([$this->getParameter('mailer_user') => $this->getParameter('siteName')])
+                            ->setTo($user->getEmail())
+                            ->setBody($this->renderView(
+                                'Emails/activation.html.twig',
+                                array(
+                                    'token' => $this->generateUrl('core_user_activate', array(
+                                        'token' => $user->getToken()
+                                    ), UrlGeneratorInterface::ABSOLUTE_URL),
+                                    'date' => $dateInSevenDays,
+                                    'name' => $user->getFullName(),
+                                    'path_oc_core_homepage' => $this->generateUrl('oc_core_homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL),
+                                    'path_assets_logo' => $this->getParameter('siteUrl').$this->getParameter('siteUri').'assets/Logo.png'
+                                )
+                            ),
+                                'text/html'
+                            );
+                        $this->get('mailer')->send($message);
+                        return $this->redirectToRoute('oc_core_homepage');
+                    } else {
                         return $this->render('OCCoreBundle:User:register.html.twig', array(
-                            'message'=> 'Le mot de passe doit être composé de 6 carractères',
+                            'message'=> 'Rôle invalide',
                             'form'=>$form->createView(),
                             'roles'=>$arrayRoleUser
                         ));
                     }
-                    else if(!preg_match('#[A-Z]#', $plainPassword))
-                    {
-                        return $this->render('OCCoreBundle:User:register.html.twig', array(
-                            'message'=> 'Le mot de passe doit contenir au moins une lettre majuscule',
-                            'form'=>$form->createView(),
-                            'roles'=>$arrayRoleUser
-                        ));
-                    }
-                    else if(!preg_match('#[a-z]#', $plainPassword))
-                    {
-                        return $this->render('OCCoreBundle:User:register.html.twig', array(
-                            'message'=> 'Le mot de passe doit contenir au moins une lettre minuscule',
-                            'form'=>$form->createView(),
-                            'roles'=>$arrayRoleUser
-                        ));
-                    }
-                    else if(!preg_match('#[0-9]#', $plainPassword))
-                    {
-                        return $this->render('OCCoreBundle:User:register.html.twig', array(
-                            'message'=> 'Le mot de passe doit contenir au moins unchiffre',
-                            'form'=>$form->createView(),
-                            'roles'=>$arrayRoleUser
-                        ));
-                    }
-    //                Encodage du MDP
-                    $encoder = $this->get('security.password_encoder');
-                    $encodedPassword = $encoder->encodePassword($user,$plainPassword);
-                    $user->setPassword($encodedPassword);
-    //                Définition du Token d'activation
-                    $user->setToken(hash('sha256', $user->getEmail()));
-                    $user->setTokenExpiredAt($dateInSevenDays);
-    //                Désactivation du compte
-                    $user->setActive(FALSE);
-    //                Définition du role
-                    $user->setRoles(array($request->get('role')));
-    //                Persistance de l'entité
-                    $em->persist($user);
-                    $em->flush();
-    //                Création d'une instance de message
-                    $twig = clone $this->get('twig');
-                    $message = \Swift_Message::newInstance()
-                        ->setSubject('Activation de votre compte')
-                        ->setFrom([$this->getParameter('mailer_user') => $this->getParameter('siteName')])
-                        ->setTo($user->getEmail())
-                        ->setBody($this->renderView(
-                            'Emails/activation.html.twig',
-                            array(
-                                'token' => $this->generateUrl('core_user_activate', array(
-                                    'token' => $user->getToken()
-                                ), UrlGeneratorInterface::ABSOLUTE_URL),
-                                'date' => $dateInSevenDays,
-                                'name' => $user->getFullName(),
-                                'path_oc_core_homepage' => $this->generateUrl('oc_core_homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL),
-                                'path_assets_logo' => $this->getParameter('siteUrl').$this->getParameter('siteUri').'assets/Logo.png'
-                            )
-                        ),
-                            'text/html'
-                        );
-                    $this->get('mailer')->send($message);
-                    return $this->redirectToRoute('oc_core_homepage');
                 } else {
                     return $this->render('OCCoreBundle:User:register.html.twig', array(
-                        'message'=> 'Rôle invalide',
+//                return $this->render('@Front/User/register.html.twig', array(
+                        'message'=> 'Pseudo déjà existant',
                         'form'=>$form->createView(),
                         'roles'=>$arrayRoleUser
                     ));
@@ -143,7 +158,7 @@ class UserController extends Controller
             } else {
                 return $this->render('OCCoreBundle:User:register.html.twig', array(
 //                return $this->render('@Front/User/register.html.twig', array(
-                    'message'=> 'Email déjà prit',
+                    'message'=> 'Email déjà existant',
                     'form'=>$form->createView(),
                     'roles'=>$arrayRoleUser
                 ));

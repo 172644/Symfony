@@ -52,7 +52,7 @@
                                 {% if app.user.image is not defined or app.user.image is null %}
                                     <img src="{{ asset('uploads/anon_user.png') }}" class="circle"/>
                                 {% else %}
-                                    <img src="{{ asset(app.user.image) }}" class="circle"/>
+                                    <img src="{{ asset(app.user.image.webPath) }}" class="circle"/>
                                 {% endif %}
                                 {% if is_granted("IS_AUTHENTICATED_FULLY") %}
                                     {{ app.user.username }}

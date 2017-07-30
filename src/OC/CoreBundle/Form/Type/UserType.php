@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use OC\PlatformBundle\Form\ImageType;
 
 class UserType extends AbstractType
 {
@@ -19,24 +20,17 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', TextType::class, array(
-                'label'=>'Pseudo : '
-            ))
-            ->add('lastname', TextType::class, array(
-                'label'=>'Nom : '
-            ))
-            ->add('firstname', TextType::class, array(
-                'label'=>'Prénom : '
-            ))
-            ->add('email', EmailType::class, array(
-                'label'=>'Email : '
-            ))
+            ->add('username', TextType::class)
+            ->add('lastname', TextType::class)
+            ->add('firstname', TextType::class)
+            ->add('email', EmailType::class)
             ->add('password', RepeatedType::class, array(
                 'type'=> PasswordType::class,
                 'invalid_message'=>'Les champs doivent être identiques',
                 'first_options'=>array('label'=>'Mot de passe'),
                 'second_options'=>array('label'=>'Répétez le mot de passe')
             ))
+            ->add('image',     ImageType::class)
             ->add("S'inscrire", SubmitType::class)
         ;
     }

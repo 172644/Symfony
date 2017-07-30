@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /*
  * @ORM\Table(name="oc_image")
@@ -32,6 +33,7 @@ class Image
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
+     * @Assert\File(maxSize="1024k")
      * @Vich\UploadableField(mapping="image", fileNameProperty="imageName", size="imageSize")
      *
      * @var File
