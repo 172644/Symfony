@@ -21,7 +21,7 @@
 
                     {% if advert.image is not null %}
                         <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
-                            <img src="{{ asset(advert.image.webPath) }}" alt="" class="circle">
+                            <img src="{{ asset(advert.image.webPath) }}" alt="" class="img-rounded">
                         </a>
                     {% endif %}
                     <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">

@@ -205,3 +205,15 @@ select.form-control:focus, textarea.form-control:focus {
 table.table.table-user-information {
     margin: 0;
 }
+.collection li.collection-item.avatar {
+    padding-left: 85px;
+}
+.collection-item .img-rounded {
+    position: absolute;
+    max-width: 70px;
+    height: 42px;
+    overflow: hidden;
+    left: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
