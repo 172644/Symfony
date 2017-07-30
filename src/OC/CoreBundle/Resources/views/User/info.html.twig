@@ -10,5 +10,5 @@
 
 {% block body %}
     <a href="{{ path('oc_core_homepage') }}">Retour</a>
-    <div class="alert alert-info">Info : {{ message }}</div>
+    <div class="alert alert-info">Info : {{ message|raw }}</div>
 {% endblock %}

@@ -19,7 +19,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main_login:
-            pattern:   ^/(login|register|forget|activate|reset)/?$
+            pattern:   ^/(login$|register/?$|forget/?$|activate|reset)/?
             anonymous: true
             provider:  userProvider
         main:
@@ -40,7 +40,7 @@ security:
         - { path: ^/login/?$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/forget, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/activate/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/activate/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/reset/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, ip: 127.0.0.1, requires_channel: https }
         #- { path: ^/admin/?((?!login|/login)([a-z0-9/]+))?$, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

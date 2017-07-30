@@ -44,6 +44,7 @@ twig:
     form_themes:
         - 'bootstrap_3_layout.html.twig'
 
+
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -70,6 +71,7 @@ doctrine:
 swiftmailer:
     transport: '%mailer_transport%'
     encryption: %encryption%
+    port : %mailer_port%
     auth_mode:  %mailer_auth% # login, plain ou cram-md5
     host: '%mailer_host%'
     username: '%mailer_user%'

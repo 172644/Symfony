@@ -40,6 +40,13 @@ class UserController extends Controller
      */
     public function registerAction(Request $request)
     {
+        $arrayRoleUser = $this->getParameter('roleUser');
+        $validRoles = array();
+        foreach ($arrayRoleUser as $_role)
+        {
+            $validRoles[] = $_role['val'];
+        }
+
         $em = $this->getDoctrine()->getManager();
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -51,54 +58,68 @@ class UserController extends Controller
 
             if($userToCompare === null)
             {
-//              Initialisation des variables
-                $dateInSevenDays = new \DateTime();
-                $dateInSevenDays->add(new \DateInterval('P'.$this->getParameter('tokenExpiration').'D'));
-                $plainPassword = $user->getPassword();
-//                Encodage du MDP
-                $encoder = $this->get('security.password_encoder');
-                $encodedPassword = $encoder->encodePassword($user,$plainPassword);
-                $user->setPassword($encodedPassword);
-//                Définition du Token d'activation
-                $user->setToken(hash('sha256', $user->getEmail()));
-                $user->setTokenExpiredAt($dateInSevenDays);
-//                Désactivation du compte
-                $user->setActive(FALSE);
-                dump($user);
-//                Persistance de l'entité
-                $em->persist($user);
-                $em->flush();
-//                Création d'une instance de message
-                $message = \Swift_Message::newInstance()
-                    ->setSubject('Activation de votre compte')
-                    ->setFrom($this->getParameter('mailer_user'))
-                    ->setTo($user->getEmail())
-                    ->setBody($this->renderView(
-                        'Emails/activation.html.twig',
-                        array(
-                            'token'=>$this->generateUrl('core_user_activate', array(
-                                'token'=>$user->getToken()
-                            ), UrlGeneratorInterface::ABSOLUTE_URL),
-                            'date'=>$dateInSevenDays,
-                            'name'=>$user->getFullName()
-                        )
-                    ),
-                        'text/html'
-                    );
-                dump($message);
-                $this->get('mailer')->send($message);
-                return $this->redirectToRoute('oc_core_homepage');
+                if(in_array($request->get('role'), $validRoles))
+                {
+    //              Initialisation des variables
+                    $dateInSevenDays = new \DateTime();
+                    $dateInSevenDays->add(new \DateInterval('P'.$this->getParameter('tokenExpiration').'D'));
+                    $plainPassword = $user->getPassword();
+    //                Encodage du MDP
+                    $encoder = $this->get('security.password_encoder');
+                    $encodedPassword = $encoder->encodePassword($user,$plainPassword);
+                    $user->setPassword($encodedPassword);
+    //                Définition du Token d'activation
+                    $user->setToken(hash('sha256', $user->getEmail()));
+                    $user->setTokenExpiredAt($dateInSevenDays);
+    //                Désactivation du compte
+                    $user->setActive(FALSE);
+    //                Définition du role
+                    $user->setRoles(array($request->get('role')));
+    //                Persistance de l'entité
+                    $em->persist($user);
+                    $em->flush();
+    //                Création d'une instance de message
+                    $twig = clone $this->get('twig');
+                    $message = \Swift_Message::newInstance()
+                        ->setSubject('Activation de votre compte')
+                        ->setFrom([$this->getParameter('mailer_user') => $this->getParameter('siteName')])
+                        ->setTo($user->getEmail())
+                        ->setBody($this->renderView(
+                            'Emails/activation.html.twig',
+                            array(
+                                'token' => $this->generateUrl('core_user_activate', array(
+                                    'token' => $user->getToken()
+                                ), UrlGeneratorInterface::ABSOLUTE_URL),
+                                'date' => $dateInSevenDays,
+                                'name' => $user->getFullName(),
+                                'path_oc_core_homepage' => $this->generateUrl('oc_core_homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL),
+                                'path_assets_logo' => $this->getParameter('siteUrl').$this->getParameter('siteUri').'assets/Logo.png'
+                            )
+                        ),
+                            'text/html'
+                        );
+                    $this->get('mailer')->send($message);
+                    return $this->redirectToRoute('oc_core_homepage');
+                } else {
+                    return $this->render('OCCoreBundle:User:register.html.twig', array(
+                        'message'=> 'Rôle invalide',
+                        'form'=>$form->createView(),
+                        'roles'=>$arrayRoleUser
+                    ));
+                }
             } else {
                 return $this->render('OCCoreBundle:User:register.html.twig', array(
 //                return $this->render('@Front/User/register.html.twig', array(
                     'message'=> 'Email déjà prit',
-                    'form'=>$form->createView()
+                    'form'=>$form->createView(),
+                    'roles'=>$arrayRoleUser
                 ));
             }
         }
         return $this->render('OCCoreBundle:User:register.html.twig', array(
 //        return $this->render('@Front/User/register.html.twig',array(
-            'form'=>$form->createView()
+            'form'=>$form->createView(),
+            'roles'=>$arrayRoleUser
         ));
     }
 
@@ -125,7 +146,7 @@ class UserController extends Controller
             $user->setToken(null);
             $user->setActive(true);
             $em->flush();
-            return $this->render('OCCoreBundle:User:info.html.twig', array('message'=>'Votre compte a été activé avec succès.'));
+            return $this->render('OCCoreBundle:User:info.html.twig', array('message'=>'Votre compte a été activé avec succès. <a href="'.$this->generateUrl('core_user_login').'">Connexion</a>'));
 
 
         } elseif ($user->isEnabled() === false && $user->isAccountNonExpired() === false){
@@ -171,25 +192,24 @@ class UserController extends Controller
                     'error'=>'Compte existant mais expiré'
                 ));
             } else {
-                $tokenExpiration = $em->getRepository('OCCoreBundle:Parameter')->findOneBy(array(
-                    'name'=>'tokenExpiration'
-                ));
                 $dateInSevenDays = new \DateTime();
-                $dateInSevenDays->add(new \DateInterval('P'.$tokenExpiration->getValue().'D'));
+                $dateInSevenDays->add(new \DateInterval('P'.$this->getParameter('tokenExpiration').'D'));
                 $user->setToken(hash('sha256', $user->getEmail()));
                 $user->setTokenExpiredAt($dateInSevenDays);
                 $em->flush();
 
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Réinitialisation de votre mot de passe')
-                    ->setFrom($this->getParameter('mailer_user'))
+                    ->setFrom([$this->getParameter('mailer_user') => $this->getParameter('siteName')])
                     ->setTo($user->getEmail())
                     ->setBody($this->renderView(
                         'Emails/forget_pass.html.twig',
                         array(
                             'token'=>$this->generateUrl('core_user_reset', array(
                                 'token'=>$user->getToken()
-                            ), UrlGeneratorInterface::ABSOLUTE_URL)
+                            ), UrlGeneratorInterface::ABSOLUTE_URL),
+                            'path_oc_core_homepage' => $this->generateUrl('oc_core_homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL),
+                            'path_assets_logo' => $this->getParameter('siteUrl').$this->getParameter('siteUri').'assets/Logo.png'
                         )
                     ),
                         'text/html'
@@ -197,7 +217,7 @@ class UserController extends Controller
 
                 $this->get('mailer')->send($message);
                 return $this->render('OCCoreBundle:User:forget.html.twig', array(
-                    'error'=>'Un email vient d\'être envoyé sur : '.$user->getUsername()
+                    'error'=>'Un email vient d\'être envoyé sur : '.$user->getEmail()
                 ));
             }
         }
@@ -229,7 +249,7 @@ class UserController extends Controller
                 $em->persist($user);
                 $em->flush();
                 return $this->render('OCCoreBundle:User:info.html.twig', array(
-                    'message'=>'Mot de passe réinitialisé'
+                    'message'=>'Mot de passe réinitialisé.  <a href="\'.$this->generateUrl(\'core_user_login\').\'">Connexion</a>'
                 ));
             } else {
                 return $this->render('OCCoreBundle:User:reset.html.twig', array(

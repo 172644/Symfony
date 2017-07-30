@@ -10,8 +10,8 @@
     <hr>
 
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <div class="menu-span">--- Platform menu ---</div>
         {% if is_granted("ROLE_AUTEUR") %}
+            <div class="menu-span">--- Platform menu ---</div>
             <li>
                 <a href="{{ path('oc_platform_add') }}">
                     <i class="material-icons">add_circle</i>
