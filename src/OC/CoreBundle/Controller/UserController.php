@@ -58,12 +58,45 @@ class UserController extends Controller
 
             if($userToCompare === null)
             {
-                if(in_array($request->get('role'), $validRoles))
+                if(!empty($request->get('role')) && in_array($request->get('role'), $validRoles))
                 {
     //              Initialisation des variables
                     $dateInSevenDays = new \DateTime();
                     $dateInSevenDays->add(new \DateInterval('P'.$this->getParameter('tokenExpiration').'D'));
+
                     $plainPassword = $user->getPassword();
+                    if(strlen($plainPassword) < 6)
+                    {
+                        return $this->render('OCCoreBundle:User:register.html.twig', array(
+                            'message'=> 'Le mot de passe doit être composé de 6 carractères',
+                            'form'=>$form->createView(),
+                            'roles'=>$arrayRoleUser
+                        ));
+                    }
+                    else if(!preg_match('#[A-Z]#', $plainPassword))
+                    {
+                        return $this->render('OCCoreBundle:User:register.html.twig', array(
+                            'message'=> 'Le mot de passe doit contenir au moins une lettre majuscule',
+                            'form'=>$form->createView(),
+                            'roles'=>$arrayRoleUser
+                        ));
+                    }
+                    else if(!preg_match('#[a-z]#', $plainPassword))
+                    {
+                        return $this->render('OCCoreBundle:User:register.html.twig', array(
+                            'message'=> 'Le mot de passe doit contenir au moins une lettre minuscule',
+                            'form'=>$form->createView(),
+                            'roles'=>$arrayRoleUser
+                        ));
+                    }
+                    else if(!preg_match('#[0-9]#', $plainPassword))
+                    {
+                        return $this->render('OCCoreBundle:User:register.html.twig', array(
+                            'message'=> 'Le mot de passe doit contenir au moins unchiffre',
+                            'form'=>$form->createView(),
+                            'roles'=>$arrayRoleUser
+                        ));
+                    }
     //                Encodage du MDP
                     $encoder = $this->get('security.password_encoder');
                     $encodedPassword = $encoder->encodePassword($user,$plainPassword);

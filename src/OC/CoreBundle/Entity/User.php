@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\Application;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -29,7 +30,8 @@ class User implements AdvancedUserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=255)
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @Assert\Length(min=5, minMessage="Le pseudo doit faire au moins {{ limit }} caractères.")
      */
     private $username;
 
@@ -37,6 +39,7 @@ class User implements AdvancedUserInterface
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=255)
+     * @Assert\Length(min=2, minMessage="Le prénom doit faire au moins {{ limit }} caractères.")
      */
     private $firstname;
 
@@ -44,6 +47,7 @@ class User implements AdvancedUserInterface
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=255)
+     * @Assert\Length(min=2, minMessage="Le nom doit faire au moins {{ limit }} caractères.")
      */
     private $lastname;
 
@@ -51,6 +55,10 @@ class User implements AdvancedUserInterface
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\Email(
+     *     message = "Votre email '{{ value }}' n'est pas valide.",
+     *     checkMX = true
+     * )
      */
     private $email;
 
@@ -65,6 +73,7 @@ class User implements AdvancedUserInterface
      * @var string
      *
      * @ORM\Column(name="token", type="string", length=255, unique=true, nullable=true)
+     * @Assert\Length(min=6, minMessage="Le mot de passe doit faire au moins {{ limit }} caractères.")
      */
     private $token;
 
