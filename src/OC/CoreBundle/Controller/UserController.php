@@ -43,6 +43,30 @@ class UserController extends Controller
 
 
 
+    public function deleteImgAction(Request $request, User $user, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user->getImage());
+        $user->setImage(null);
+        $em->flush();
+        return $this->redirectToRoute('core_user_edit', array('id'=>$user->getId()));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function editAction(Request $request, User $user, $id)
     {
         $arrayRoleUser = $this->getParameter('roleUser');

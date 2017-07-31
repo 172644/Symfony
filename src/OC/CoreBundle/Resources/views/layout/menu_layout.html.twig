@@ -20,6 +20,12 @@
         {#</a>#}
     {#</li>#}
     <li>
+        <a href="{{ path('core_user_edit', {'id': app.user.id}) }}">
+            <i class="material-icons">edit</i>
+            Mon profil
+        </a>
+    </li>
+    <li>
         <a href="{{ path('core_user_logout') }}">
             <i class="material-icons">power_settings_new</i>
             Déconnexion

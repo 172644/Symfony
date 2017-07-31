@@ -86,17 +86,16 @@
             </div>
         </div>
 
+        {% if user.image is defined and user.image is not null %}
         <div class="form-group">
             <label class="col-sm-2 control-label">Image actuelle</label>
 
             <div class="col-sm-10">
-                {% if user.image is not defined or user.image is null %}
-                    <img src="{{ asset('uploads/anon_user.png') }}" class="img-rounded"/>
-                {% else %}
-                    <img src="{{ asset(user.image.webPath) }}" class="img-rounded"/>
-                {% endif %}
+                <a href="{{ path('core_user_delete_img', {'id': user.id}) }}" class="btn btn-danger" id="delete_img">Supprimer</a>
+                <img src="{{ asset(user.image.webPath) }}" class="img-rounded"/>
             </div>
         </div>
+        {% endif %}
 
         <div class="form-group">
             <span class="col-sm-2 control-label"> </span>

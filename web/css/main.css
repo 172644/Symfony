@@ -217,3 +217,15 @@ table.table.table-user-information {
     display: inline-block;
     vertical-align: middle;
 }
+
+.file-field .vich-file {
+    opacity: 0;
+    width: 0px;
+}
+
+#delete_img {
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    opacity: 0.5;
+}

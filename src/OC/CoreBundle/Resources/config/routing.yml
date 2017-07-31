@@ -41,3 +41,7 @@ core_user_forget_pass:
 core_user_reset:
     path:     /reset/{token}
     defaults: { _controller: OCCoreBundle:User:reset }
+
+core_user_delete_img:
+    path:     /delete/{id}
+    defaults: { _controller: OCCoreBundle:User:deleteImg }

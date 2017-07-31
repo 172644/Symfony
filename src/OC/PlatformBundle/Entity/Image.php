@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @Vich\Uploadable
  */
-class Image
+class Image implements \Serializable
 {
     /**
      * @ORM\Column(name="id", type="integer")
@@ -34,7 +34,7 @@ class Image
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
      * @Assert\File(maxSize="1024k")
-     * @Vich\UploadableField(mapping="image", fileNameProperty="imageName", size="imageSize")
+     * @Vich\UploadableField(mapping="image", fileNameProperty="imageName")
      *
      * @var File
      */
@@ -136,4 +136,13 @@ class Image
         return $this->id;
     }
 
+    public function serialize()
+    {
+        // TODO: Implement serialize() method.
+    }
+
+    public function unserialize($serialized)
+    {
+        // TODO: Implement unserialize() method.
+    }
 }

@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="OC\CoreBundle\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class User implements AdvancedUserInterface
+class User implements AdvancedUserInterface, \Serializable
 {
     /**
      * @var int
