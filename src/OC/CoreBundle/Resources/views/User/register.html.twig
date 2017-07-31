@@ -1,4 +1,4 @@
-{% extends "OCPlatformBundle::layout.html.twig" %}
+{% extends "OCCoreBundle::layout.html.twig" %}
 
 {% block title %}
     Inscription - {{ siteName }}
@@ -115,15 +115,4 @@
     </div>
 
     {{ form_end(form) }}
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-
-
-    <script>
-        $( document ).ready(function() {
-            $('[data-toggle="popover"]').popover();
-        });
-    </script>
 {% endblock %}

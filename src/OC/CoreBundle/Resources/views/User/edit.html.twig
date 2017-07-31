@@ -1,4 +1,4 @@
-{% extends "OCPlatformBundle::layout.html.twig" %}
+{% extends "OCCoreBundle::layout.html.twig" %}
 
 {% block title %}
     Edit - {{ siteName }}
@@ -69,6 +69,16 @@
             </div>
         </div>
 
+        {% if user == app.user %}
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Password</label>
+
+                <div class="col-sm-10">
+                    <a href="{{ path('core_user_change_password', {'id': user.id}) }}" class="btn btn-warning">Modifier mon mot de passe</a>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="form-group">
             {{ form_label(form.image.imageFile, "Image", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
@@ -87,20 +97,24 @@
         </div>
 
         {% if user.image is defined and user.image is not null %}
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Image actuelle</label>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Image actuelle</label>
 
-            <div class="col-sm-10">
-                <a href="{{ path('core_user_delete_img', {'id': user.id}) }}" class="btn btn-danger" id="delete_img">Supprimer</a>
-                <img src="{{ asset(user.image.webPath) }}" class="img-rounded"/>
+                <div class="col-sm-10">
+                    <a href="{{ path('core_user_delete_img', {'id': user.id}) }}" class="btn btn-danger" id="delete_img">Supprimer</a>
+                    <img src="{{ asset(user.image.webPath) }}" class="img-rounded"/>
+                </div>
             </div>
-        </div>
         {% endif %}
 
         <div class="form-group">
             <span class="col-sm-2 control-label"> </span>
 
             <div class="col-sm-10">
+                <a href="{{ path('core_user_profil', {'id': user.id}) }}" class="btn btn-default">
+                    <i class="Tiny material-icons">arrow_back</i> <span> Retour</span>
+                </a>
+                {{ form_widget(form.Modifier, {'attr': {'class': 'btn btn-default'}}) }}
                 {{ form_rest(form) }}
             </div>
         </div>

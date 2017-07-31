@@ -21,23 +21,16 @@ class UserController extends Controller
         ));
     }
 
+
+
+
+
     public function viewAction(User $user, $id){
 
         return $this->render('OCCoreBundle:User:profil.html.twig', array(
             'user'=>$user
         ));
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -51,17 +44,6 @@ class UserController extends Controller
         $em->flush();
         return $this->redirectToRoute('core_user_edit', array('id'=>$user->getId()));
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -90,15 +72,6 @@ class UserController extends Controller
             'roles'=>$arrayRoleUser
         ));
     }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -245,11 +218,6 @@ class UserController extends Controller
 
 
 
-
-
-
-
-
     public function activateAction(Request $request, $token){
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('OCCoreBundle:User')->findOneBy(array(
@@ -279,11 +247,6 @@ class UserController extends Controller
             return $this->render('OCCoreBundle:User:info.html.twig', array('message'=>'Erreur inconnue.'));
         }
     }
-
-
-
-
-
 
 
 
@@ -346,12 +309,6 @@ class UserController extends Controller
 
 
 
-
-
-
-
-
-
     public function resetAction(Request $request, $token){
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('OCCoreBundle:User')->findOneBy(array(
@@ -359,6 +316,32 @@ class UserController extends Controller
         ));
 
         if ($request->isMethod('POST')) {
+            $plainPassword = $request->get('_password');
+            if(strlen($plainPassword) < 6)
+            {
+                return $this->render('OCCoreBundle:User:reset.html.twig', array(
+                    'error'=> 'Le mot de passe doit être composé de 6 carractères',
+                ));
+            }
+            else if(!preg_match('#[A-Z]#', $plainPassword))
+            {
+                return $this->render('OCCoreBundle:User:reset.html.twig', array(
+                    'error'=> 'Le mot de passe doit contenir au moins une lettre majuscule',
+                ));
+            }
+            else if(!preg_match('#[a-z]#', $plainPassword))
+            {
+                return $this->render('OCCoreBundle:User:reset.html.twig', array(
+                    'error'=> 'Le mot de passe doit contenir au moins une lettre minuscule',
+                ));
+            }
+            else if(!preg_match('#[0-9]#', $plainPassword))
+            {
+                return $this->render('OCCoreBundle:User:reset.html.twig', array(
+                    'error'=> 'Le mot de passe doit contenir au moins unchiffre',
+                ));
+            }
+
             if ($request->get('_password') == $request->get('_repeated_password')){
 
                 $password = $this->get('security.password_encoder')->encodePassword($user, $request->get('_password'));
@@ -392,5 +375,60 @@ class UserController extends Controller
         return $this->render('OCCoreBundle:User:reset.html.twig', array(
             'token'=>$token
         ));
+    }
+
+
+
+
+
+    public function changePasswordAction(Request $request, User $user, $id){
+
+        if ($request->isMethod('POST')) {
+            $plainPassword = $request->get('_password');
+            if(strlen($plainPassword) < 6)
+            {
+                return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
+                    'error'=> 'Le mot de passe doit être composé de 6 carractères',
+                ));
+            }
+            else if(!preg_match('#[A-Z]#', $plainPassword))
+            {
+                return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
+                    'error'=> 'Le mot de passe doit contenir au moins une lettre majuscule',
+                ));
+            }
+            else if(!preg_match('#[a-z]#', $plainPassword))
+            {
+                return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
+                    'error'=> 'Le mot de passe doit contenir au moins une lettre minuscule',
+                ));
+            }
+            else if(!preg_match('#[0-9]#', $plainPassword))
+            {
+                return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
+                    'error'=> 'Le mot de passe doit contenir au moins unchiffre',
+                ));
+            }
+
+            if ($plainPassword == $request->get('_repeated_password')){
+                if ($this->get('security.password_encoder')->isPasswordValid($user, $request->get('_oldpassword'))) {
+                    $password = $this->get('security.password_encoder')->encodePassword($user, $request->get('_password'));
+                    $user->setPassword($password);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('core_user_profil', array('id' => $user->getId())));
+                } else {
+                    return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
+                        'error'=>'Le mot de passe est incorrect'
+                    ));
+                }
+            } else {
+                return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
+                    'error'=>'Les champs ne sont pas identiques'
+                ));
+            }
+
+        }
+        return $this->render('OCCoreBundle:User:editPassword.html.twig');
     }
 }

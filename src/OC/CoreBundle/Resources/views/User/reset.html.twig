@@ -1,4 +1,4 @@
-{% extends "OCPlatformBundle::layout.html.twig" %}
+{% extends "OCCoreBundle::layout.html.twig" %}
 
 {% block title %}
     Réinitialisation - {{ siteName }}
@@ -14,10 +14,10 @@
     {% endif %}
     <form action="{{ path('core_user_reset', {'token': token}) }}" method="POST">
         <label for="password">Mot de Passe:</label>
-        <input type="password" id="password" name="_password" />
+        <input type="password" id="password" name="_password" minlength="6" data-toggle="popover" data-trigger="active" data-placement="bottom" data-content="Minimum : 6 caractères, une majuscule, une minuscule et un chiffre" required/>
 
         <label for="password">Mot de Passe:</label>
-        <input type="password" id="password" name="_repeated_password" />
+        <input type="password" id="password" name="_repeated_password" minlength="6" required/>
 
         <button type="submit">Valider</button>
     </form>

@@ -1,4 +1,4 @@
-{% extends "OCPlatformBundle::layout.html.twig" %}
+{% extends "OCCoreBundle::layout.html.twig" %}
 
 {% block title %}
     Profil - {{ siteName }}
@@ -71,7 +71,7 @@
                             </td>
                             <td>
 
-                                {% if  (user == app.user) or is_granted('ROLE_ADMIN') %}
+                                {% if is_granted('ROLE_ADMIN') %}
                                     {#{{ path('core_user_delete', {'id': advert.id}) }}#}
                                     <a href="#" class="btn btn-danger">
                                         <i class="material-icons">delete</i>

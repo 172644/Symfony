@@ -9,14 +9,9 @@
 {% endblock %}
 
 {% block body %}
-
-    {#<hr>#}
-
     <p>
         {% for message in app.session.flashbag.get('info') %}
             <div class="alert alert-info">Info : {{ message }}</div>
         {% endfor %}
     </p>
-
-    {#<hr>#}
 {% endblock %}
