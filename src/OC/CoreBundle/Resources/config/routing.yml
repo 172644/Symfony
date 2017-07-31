@@ -30,6 +30,10 @@ core_user_profil:
     path:     /profil/{id}
     defaults: { _controller: OCCoreBundle:User:view }
 
+core_user_edit:
+    path:     /edit/{id}
+    defaults: { _controller: OCCoreBundle:User:edit }
+
 core_user_forget_pass:
     path:     /forget
     defaults: { _controller: OCCoreBundle:User:forget }

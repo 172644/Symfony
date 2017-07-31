@@ -1,0 +1,111 @@
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    Edit - {{ siteName }}
+{% endblock %}
+
+{% block titlePage %}
+    Modification
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+    {% if message is defined %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endif %}
+
+    {{ form_errors(form) }}
+
+    <div class="well">
+
+
+
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Rôle</label>
+
+            <div class="col-sm-10">
+                {% for role in roles %}
+                    <input type="radio" name="role" value="{{ role.val }}" id="{{ role.val }}" {{ (role.val in user.roles)?'checked':'' }}><label for="{{ role.val }}">{{ role.str }}</label>
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.username, 'Pseudo', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-10">
+                {{ form_widget(form.username, {'attr': {'class': 'form-control', 'minlength':5}}) }}
+                {{ form_errors(form.username) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.lastname, 'Nom', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-10">
+                {{ form_widget(form.lastname, {'attr': {'class': 'form-control', 'minlength':2}}) }}
+                {{ form_errors(form.lastname) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.firstname, 'Prénom', {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-10">
+                {{ form_widget(form.firstname, {'attr': {'class': 'form-control', 'minlength':2}}) }}
+                {{ form_errors(form.firstname) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.email, "Email", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-10">
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.image.imageFile, "Image", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+            <div class="col-sm-10">
+                <div class="file-field">
+                    <div class="btn">
+                        <span>File</span>
+                        {{ form_widget(form.image.imageFile) }}
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+                {{ form_errors(form.image.imageFile) }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Image actuelle</label>
+
+            <div class="col-sm-10">
+                {% if user.image is not defined or user.image is null %}
+                    <img src="{{ asset('uploads/anon_user.png') }}" class="img-rounded"/>
+                {% else %}
+                    <img src="{{ asset(user.image.webPath) }}" class="img-rounded"/>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="col-sm-2 control-label"> </span>
+
+            <div class="col-sm-10">
+                {{ form_rest(form) }}
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

@@ -4,6 +4,7 @@ namespace OC\CoreBundle\Controller;
 
 use OC\CoreBundle\Entity\User;
 use OC\CoreBundle\Form\Type\UserType;
+use OC\CoreBundle\Form\Type\UserEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -27,6 +28,44 @@ class UserController extends Controller
         ));
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function editAction(Request $request, User $user, $id)
+    {
+        $arrayRoleUser = $this->getParameter('roleUser');
+        $validRoles = array();
+        foreach ($arrayRoleUser as $_role)
+        {
+            $validRoles[] = $_role['val'];
+        }
+
+        $form = $this->createForm(UserEditType::class, $user);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->redirectToRoute('core_user_profil', array('id'=>$user->getId()));
+        }
+        return $this->render('OCCoreBundle:User:edit.html.twig', array(
+            'form'=>$form->createView(),
+            'user'=>$user,
+            'roles'=>$arrayRoleUser
+        ));
+    }
 
 
 

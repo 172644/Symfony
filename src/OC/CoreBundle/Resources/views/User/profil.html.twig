@@ -63,8 +63,7 @@
                         <tr>
                             <td>
                                 {% if (user == app.user) or (is_granted('ROLE_ADMIN')) %}
-                                    {#{{ path('core_user_edit', {'id': advert.id}) }}#}
-                                    <a href="#" class="btn btn-default">
+                                    <a href="{{ path('core_user_edit', {'id': user.id}) }}" class="btn btn-default">
                                         <i class="material-icons">edit</i>
                                         Modifier mes informations
                                     </a>
