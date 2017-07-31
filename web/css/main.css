@@ -208,14 +208,16 @@ table.table.table-user-information {
 .collection li.collection-item.avatar {
     padding-left: 85px;
 }
-.collection-item .img-rounded {
-    position: absolute;
+.collection-item .img-rounded, .img-rounded.small-pics {
     max-width: 70px;
     height: 42px;
     overflow: hidden;
+    vertical-align: middle;
+}
+.collection-item .img-rounded {
+    position: absolute;
     left: 15px;
     display: inline-block;
-    vertical-align: middle;
 }
 
 .file-field .vich-file {
@@ -228,4 +230,12 @@ table.table.table-user-information {
     top: 5px;
     left: 20px;
     opacity: 0.5;
+}
+
+.collapsible, .collapsible-header, .collapsible-body {
+    border-color: #272b30;
+}
+
+.collapsible-header {
+    background-color: #1c1e22;
 }
