@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="{{ asset('css/Slate.css') }}" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
     {% endblock %}
 </head>
@@ -94,16 +95,71 @@
 
     <hr>
 
-    <footer>
-        <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
-    </footer>
 </div>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-6 footerleft ">
+                <div class="logofooter"> Webmaster</div>
+                <p><i class="fa fa-map-pin"></i>Erwan Locart</p>
+                <p><a href="mailto: 172644@supinfo.com"><i class="fa fa-envelope"></i>erwan.locart@supinfo.com.com</a></p>
+            </div>
+            <div class="col-md-4 col-sm-6 paddingtop-bottom">
+                <div class="logofooter">Réseaux sociaux</div>
+                <ul class="footer-ul">
+                    <li>
+                        <a href="javascript:void(0)" class="fa fa-linkedin icon" data-toggle="popover"
+                           data-trigger="hover" data-placement="bottom" data-content="Non disponible pour le moment"></a>
+                        <a href="javascript:void(0)" class="fa fa-viadeo icon" data-toggle="popover"
+                           data-trigger="hover" data-placement="bottom" data-content="Non disponible pour le moment"></a>
+                        <a href="https://github.com/172644" class="fa fa-github icon" data-toggle="popover"
+                           data-trigger="hover" data-placement="bottom" data-content="www.github.com/172644"></a>
+                        <a href="https://www.facebook.com/erwan.locart" class="fa fa-facebook icon" data-toggle="popover"
+                           data-trigger="hover" data-placement="bottom" data-content="www.facebook.com/erwan.locart"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-6 paddingtop-bottom hidden-sm hidden-xs">
+                <div class="logofooter">Projet</div>
+                <div class="post">
+                    <a href="https://github.com/172644/Symfony" class="fa fa-github icon" style="float: left;" data-toggle="popover"
+                       data-trigger="hover" data-placement="bottom" data-content="www.github.com/172644/Symfony"></a>
+                    <p>
+                        Ce projet est disponible sur GitHub<br />
+                        <span>Erwan Locart</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        <div class="container">
+            <div class="col-md-6">
+                <p>© {{ "now"|date('Y') }} -  Erwan Locart, All rights reserved.</p>
+            </div>
+            {#<div class="col-md-6">#}
+            {#<ul class="bottom_ul">#}
+            {#<li><a href="#">webenlance.com</a></li>#}
+            {#<li><a href="#">About us</a></li>#}
+            {#<li><a href="#">Blog</a></li>#}
+            {#<li><a href="#">Faq's</a></li>#}
+            {#<li><a href="#">Contact us</a></li>#}
+            {#<li><a href="#">Site Map</a></li>#}
+            {#</ul>#}
+            {#</div>#}
+        </div>
+    </div>
+</footer>
+<!--footer start from here-->
+
 
 {% block javascripts %}
     {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+    {#<script src="https://use.fontawesome.com/f8e0146b1c.js"></script>#}
     <script>
         $( document ).ready(function() {
             console.log( "ready!" );
