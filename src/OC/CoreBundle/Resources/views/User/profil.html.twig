@@ -15,9 +15,11 @@
                 <div class="col-md-3 col-lg-3 " align="center"> <img alt="{{ user.username }} image" src="{{ asset('uploads/anon_user.png') }}" class="img-responsive"> </div>
             {% else %}
                 {% if user == app.user %}
-                    <a href="{{ path('core_user_delete_img', {'id': user.id}) }}" class="btn btn-danger" id="delete_img">Supprimer</a>
                 {% endif %}
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="{{ user.username }} image" src="{{ asset(user.image.webPath) }}" class="img-responsive"> </div>
+                <div class="col-md-3 col-lg-3 " align="center">
+                    <a href="{{ path('core_user_delete_img', {'id': user.id}) }}" class="btn btn-danger" id="delete_img">Supprimer</a>
+                    <img alt="{{ user.username }} image" src="{{ asset(user.image.webPath) }}" class="img-responsive">
+                </div>
             {% endif %}
 
             <div class=" col-md-9 col-lg-9 ">
