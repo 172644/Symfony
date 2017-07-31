@@ -3,6 +3,7 @@
 security:
     encoders:
         OC\CoreBundle\Entity\User: bcrypt
+    always_authenticate_before_granting: true
 
     role_hierarchy:
         ROLE_MODERATEUR:  [ROLE_SEARCH, ROLE_AUTEUR]

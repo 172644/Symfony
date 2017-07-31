@@ -62,9 +62,21 @@ class UserController extends Controller
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
         {
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            return $this->redirectToRoute('core_user_profil', array('id'=>$user->getId()));
+            if(!empty($request->get('role')) && in_array($request->get('role'), $validRoles)) {
+                $user->setRoles(array($request->get('role')));
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+                return $this->redirectToRoute('core_user_profil', array('id' => $user->getId()));
+            }
+            else
+            {
+                return $this->render('OCCoreBundle:User:edit.html.twig', array(
+                    'form'=>$form->createView(),
+                    'user'=>$user,
+                    'roles'=>$arrayRoleUser,
+                    'message'=>'Rôle invalide.'
+                ));
+            }
         }
         return $this->render('OCCoreBundle:User:edit.html.twig', array(
             'form'=>$form->createView(),
