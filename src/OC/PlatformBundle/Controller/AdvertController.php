@@ -207,36 +207,28 @@ class AdvertController extends Controller
 
     ///////////////////////////////////////////////////////////////////////////////////
 
-    public function deleteAction($id, Request $request)
+    public function deleteAction(Advert $advert, $id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $em->remove($advert);
+        $em->flush();
 
-        $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
+        $request->getSession()->getFlashBag()->add('info', "L'annonce a bien été supprimée.");
 
-        if (null === $advert)
-        {
-            $session = $request->getSession();
-            $session->getFlashBag()->add('info', "L'annonce d'id ".$id." n'existe pas.");
-            return $this->redirectToRoute('oc_platform_home');
-        }
+        return $this->redirectToRoute('oc_platform_home');
+    }
 
-        // On crée un formulaire vide, qui ne contiendra que le champ CSRF
-        // Cela permet de protéger la suppression d'annonce contre cette faille
-        $form = $this->get('form.factory')->create();
+    ///////////////////////////////////////////////////////////////////////////////////
 
-        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $em->remove($advert);
-            $em->flush();
+    public function deleteAppAction(Application $app, $id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $advert = $app->getAdvert();
+        $advert->removeApplication($app);
+        $em->remove($app);
+        $em->flush();
 
-            $request->getSession()->getFlashBag()->add('info', "L'annonce a bien été supprimée.");
-
-            return $this->redirectToRoute('oc_platform_home');
-        }
-
-        return $this->render('OCPlatformBundle:Advert:delete.html.twig', array(
-            'advert' => $advert,
-            'form'   => $form->createView(),
-        ));
+        return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////

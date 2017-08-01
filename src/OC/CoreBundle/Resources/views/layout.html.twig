@@ -180,6 +180,14 @@
             });
             $('[data-toggle="popover"]').popover();
             $('.collapsible').collapsible();
+
+            $('.btn-danger, .button.danger').click(function () {
+                var click = confirm('Êtes-vous sûr de cette action ?');
+
+                if(click == false){
+                    return false;
+                }
+            });
         });
     </script>
 {% endblock %}

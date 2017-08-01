@@ -51,6 +51,13 @@ oc_platform_delete:
     requirements:
         id: \d+
 
+oc_platform_delete_application:
+    path:      /deleteApplication/{id}
+    defaults:
+        _controller: OCPlatformBundle:Advert:deleteApp
+    requirements:
+        id: \d+
+
 
 
 
