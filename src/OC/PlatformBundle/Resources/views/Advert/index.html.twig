@@ -18,18 +18,23 @@
     <ul class="collection">
         {% for advert in listAdverts %}
             <li class="collection-item avatar">
-
-                    {% if advert.image is not null %}
-                        <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
-                            <img src="{{ asset(advert.image.webPath) }}" alt="" class="img-rounded">
-                        </a>
-                    {% endif %}
+                {% if advert.image is not null %}
                     <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
-                        <span class="title">{{ advert.title }}</span>
+                        <img src="{{ asset(advert.image.webPath) }}" alt="" class="img-rounded">
                     </a>
-                    <p>
-                        Par <a href="{{ path('core_user_profil', {'id': advert.author.id}) }}">{{ advert.author.username }}</a> - {{ advert.date|date('d/m/Y') }}
-                    </p>
+                {% endif %}
+                <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
+                    <span class="title">{{ advert.title }}</span>
+                </a>
+                <p>
+                    Par <a href="{{ path('core_user_profil', {'id': advert.author.id}) }}">{{ advert.author.username }}</a> - {{ advert.date|date('d/m/Y') }}
+                </p>
+
+                <div>
+                    {% for category in advert.categories %}
+                        <span class="label label-{{ bootstrap_color[random(bootstrap_color | keys)] }}">{{ category.name }}</span>
+                    {% endfor %}
+                </div>
             </li>
         {% else %}
             <li>Pas (encore !) d'annonces</li>

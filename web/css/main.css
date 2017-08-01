@@ -329,3 +329,8 @@ table.table.table-user-information {
     vertical-align: middle;
     border-bottom: solid 1px #1c1e22;
 }
+
+.collection, .collection .collection-item.avatar {
+    border-color: #000000;
+    background-color: #1c1e22;
+}
