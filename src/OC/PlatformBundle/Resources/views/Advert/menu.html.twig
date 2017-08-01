@@ -8,6 +8,9 @@
                         <div class="notif-number">{{ advert.nbApplications }}</div>
                     {% endif %}
                     {{ advert.title }}
+                    <div class="ghost-link">
+                        Par {{ advert.author.username }} le {{ advert.date|date('d/m/Y H:i:s') }}
+                    </div>
                 </a>
             </li>
         {% endfor %}

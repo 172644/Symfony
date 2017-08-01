@@ -26,14 +26,14 @@
         <hr>
     {% endif %}
 
-    {% if is_granted('ROLE_SEARCH') %}
+    {% if app.user.applications|length > 0 %}
         <div class="menu-span">--- Mes dernières applications ---</div>
         {{ render(controller("OCPlatformBundle:Advert:lastApplication", {'user': app.user})) }}
         <hr>
     {% endif %}
 
-    {% if is_granted('ROLE_AUTEUR') %}
-        <div class="menu-span">--- Mes dernières  annonces ---</div>
+    {% if app.user.adverts|length > 0 %}
+        <div class="menu-span">--- Mes dernières annonces ---</div>
         {{ render(controller("OCPlatformBundle:Advert:lastAdvert", {'user': app.user})) }}
         <hr>
     {% endif %}

@@ -334,3 +334,18 @@ table.table.table-user-information {
     border-color: #000000;
     background-color: #1c1e22;
 }
+
+.ghost-link {
+    position: absolute;
+    z-index: 10;
+    top: 12px;
+    color: #383d42;
+    font-size: 13px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.ghost-link:hover {
+    opacity: 1;
+}
