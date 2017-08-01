@@ -42,7 +42,7 @@
                     Catégories :
                     {% for category in advert.categories %}
                         {#{{ category.name }}{% if not loop.last %}, {% endif %}#}
-                        <span class="label label-{{ bootstrap_color[random(bootstrap_color | keys)] }}">{{ category.name }}</span>
+                        {% include'OCPlatformBundle:Advert:category.html.twig' with {'_cat': category} %}
                     {% endfor %}
                 </p>
             {% endif %}

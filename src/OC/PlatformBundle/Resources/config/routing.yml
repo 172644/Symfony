@@ -24,6 +24,14 @@ oc_platform_view:
     requirements:
         id: \d+
 
+oc_platform_tag:
+    path:      /tag/{id}
+    defaults:
+        _controller: OCPlatformBundle:Advert:tag
+        id:  1
+    requirements:
+        id: \d*
+
 oc_platform_add:
     path:      /add
     defaults:

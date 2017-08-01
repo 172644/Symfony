@@ -1,0 +1,55 @@
+{% extends "OCPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    Accueil - {{ parent() }}
+{% endblock %}
+
+{% block titlePage %}
+    Liste des annonces
+{% endblock %}
+
+{% block ocplatform_body %}
+    <p>
+    {% for message in app.session.flashbag.get('info') %}
+        <div class="alert alert-info">Info : {{ message }}</div>
+    {% endfor %}
+    </p>
+
+    {% if list_category is defined and list_category is not null %}
+        <ul class="collapsible" data-collapsible="accordion">
+            {% for _cat in list_category %}
+                <li {{ (_cat.id == id_cat)?'class="active"':'' }} id="{{ _cat.id }}">
+                    <div class="collapsible-header {{ (_cat.id == id_cat)?'active':'' }}" {{ (_cat.id == id_cat)?'active':'' }}><i class="material-icons">description</i>{{ _cat.name }}</div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            {% for advert in listAdverts %}
+                                {% if _cat in advert.categories %}
+                                    <li class="collection-item avatar">
+                                        {% if advert.image is not null %}
+                                            <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
+                                                <img src="{{ asset(advert.image.webPath) }}" alt="" class="img-rounded">
+                                            </a>
+                                        {% endif %}
+                                        <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
+                                            <span class="title">{{ advert.title }}</span>
+                                        </a>
+                                        <p>
+                                            Par <a href="{{ path('core_user_profil', {'id': advert.author.id}) }}">{{ advert.author.username }}</a> - {{ advert.date|date('d/m/Y') }}
+                                        </p>
+
+                                        <div>
+                                            {% for category in advert.categories %}
+                                                {% include'OCPlatformBundle:Advert:category.html.twig' with {'_cat': category} %}
+                                            {% endfor %}
+                                        </div>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

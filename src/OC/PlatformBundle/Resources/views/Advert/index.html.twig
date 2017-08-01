@@ -32,7 +32,7 @@
 
                 <div>
                     {% for category in advert.categories %}
-                        <span class="label label-{{ bootstrap_color[random(bootstrap_color | keys)] }}">{{ category.name }}</span>
+                        {% include'OCPlatformBundle:Advert:category.html.twig' with {'_cat': category} %}
                     {% endfor %}
                 </div>
             </li>

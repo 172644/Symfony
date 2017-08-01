@@ -291,11 +291,11 @@ table.table.table-user-information {
     margin: 0;
 }
 .collection li.collection-item.avatar {
-    padding-left: 85px;
+    padding-left: 135px;
 }
 .collection-item .img-rounded, .img-rounded.small-pics {
-    max-width: 70px;
-    height: 42px;
+    max-width: 120px;
+    height: 65px;
     overflow: hidden;
     vertical-align: middle;
 }
@@ -318,7 +318,7 @@ table.table.table-user-information {
 }
 
 .collapsible, .collapsible-header, .collapsible-body {
-    border-color: #272b30;
+    border-color: #181a1f;
 }
 
 .collapsible-header {

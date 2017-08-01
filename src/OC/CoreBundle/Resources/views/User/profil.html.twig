@@ -111,9 +111,9 @@
                                             <td>{{ _advert.date|date("H:i m/d/Y") }}</td>
                                             <td>
                                                 <a href="{{ path('oc_platform_view', {'id': _advert.id}) }}">
-                                                    {% if _advert.image is not null %}
-                                                        <img src="{{ asset(_advert.image.webPath) }}" alt="" class="img-rounded small-pics">
-                                                    {% endif %}
+                                                    {#{% if _advert.image is not null %}#}
+                                                        {#<img src="{{ asset(_advert.image.webPath) }}" alt="" class="img-rounded small-pics">#}
+                                                    {#{% endif %}#}
                                                     {{ _advert.title }}
                                                 </a>
                                             </td>

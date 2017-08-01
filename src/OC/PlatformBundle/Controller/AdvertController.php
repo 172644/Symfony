@@ -61,6 +61,21 @@ class AdvertController extends Controller
             'listAdverts' => $listAdverts
         ));
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////
+
+    public function tagAction($id = null, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $listCategory = $em->getRepository('OCPlatformBundle:Category')->findAll();
+        $listAdvert = $em->getRepository('OCPlatformBundle:Advert')->findAll();
+
+        return $this->render('OCPlatformBundle:Advert:list.html.twig', array(
+            'list_category' => $listCategory,
+            'listAdverts' => $listAdvert,
+            'id_cat' => $id
+        ));
+    }
     ///////////////////////////////////////////////////////////////////////////////////
 
     public function purgeAction($day = 60)
