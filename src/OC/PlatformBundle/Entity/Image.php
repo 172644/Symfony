@@ -33,7 +33,7 @@ class Image implements \Serializable
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
-     * @Assert\File(maxSize="1024k")
+     * @Assert\File(maxSize="4096k")
      * @Vich\UploadableField(mapping="image", fileNameProperty="imageName")
      *
      * @var File
