@@ -29,7 +29,7 @@
         {{ form_label(form.content, "Contenu de l'annonce", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
         {{ form_errors(form.content) }}
         <div class="col-sm-10">
-            {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control materialize-textarea'}}) }}
         </div>
     </div>
 
@@ -68,21 +68,29 @@
     {% endif %}
 
     <div class="form-group">
-        {{ form_label(form.image, "Image", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.image) }}
+        {{ form_label(form.image.imageFile, "Image", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
         <div class="col-sm-10">
-            {{ form_widget(form.image) }}
+            <div class="file-field">
+                <div class="btn">
+                    <span>File</span>
+                    {{ form_widget(form.image.imageFile) }}
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text">
+                </div>
+            </div>
+            {{ form_errors(form.image.imageFile) }}
         </div>
     </div>
 
     {% if advert is defined %}
-        {% if advert.image is not null %}
+        {% if advert.image is defined and advert.image is not null %}
             <div class="form-group">
-                <span class="col-sm-2 control-label">Image actuelle</span>
+                <label class="col-sm-2 control-label">Image actuelle</label>
 
                 <div class="col-sm-10">
-                    <img src="{{ asset(advert.image.webPath) }}" class="materialboxed"/>
+                    <img src="{{ asset(advert.image.webPath) }}" class="img-rounded materialboxed"/>
                 </div>
             </div>
         {% endif %}

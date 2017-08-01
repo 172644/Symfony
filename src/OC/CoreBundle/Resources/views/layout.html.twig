@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css">
         <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
     {% endblock %}
 </head>
@@ -163,6 +164,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     {#<script src="https://use.fontawesome.com/f8e0146b1c.js"></script>#}
     <script>
         $( document ).ready(function() {
@@ -180,6 +182,9 @@
             });
             $('[data-toggle="popover"]').popover();
             $('.collapsible').collapsible();
+            $('select').select2({
+                closeOnSelect: false
+            });
 
             $('.btn-danger, .button.danger').click(function () {
                 var click = confirm('Êtes-vous sûr de cette action ?');
