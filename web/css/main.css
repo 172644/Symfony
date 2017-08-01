@@ -82,7 +82,7 @@ ul .fa, .icon.fa {
 
 body {
     padding: 0px;
-    padding-top: 65px;
+    padding-top: 55px;
 }
 
 .title-head {
@@ -91,11 +91,12 @@ body {
     font-family: fantasy;
     padding: 0 5px;
     text-transform: uppercase;
-    width: 240px;
+    width: 270px;
     display: block;
     text-align: center;
     border-right: solid 1px #272b30;
 }
+
 .title-head img {
     max-height: 30px;
     margin-right: 10px;
@@ -104,14 +105,15 @@ body {
 
 #menu #slide-out {
     margin-top: 65px;
-    width: 240px;
-    max-width: 240px;
-    overflow: hidden;
+    width: 270px;
+    max-width: 270px;
     height: calc(100% - 65px);
     background-color: #272b30;
     padding: 0 5px;
+    overflow: hidden;
 }
 #menu #slide-out:hover {
+    overflow: auto;
     overflow: overlay;
     overflow-x: hidden;
 }
@@ -154,7 +156,7 @@ body {
 }
 
 header, main, .copyright, .container {
-    padding-left: 255px;
+    padding-left: 285px;
 }
 
 @media only screen and (max-width : 992px) {
@@ -168,6 +170,35 @@ header, main, .copyright, .container {
     }
     .title-head {
         border-right: none;
+    }
+
+    .table-user-information th {
+        max-width: 90px;
+    }
+
+    .hidden-head {
+        display: none;
+    }
+
+    .title-head {
+        width: auto;
+    }
+
+    header, main, .copyright, .container {
+        padding-left: 15px;
+    }
+    .button-collapse {
+        display: initial;
+        padding-right: 18px;
+        border-right: solid 1px #272b30;
+    }
+    .title-head {
+        border-right: none;
+    }
+
+    #menu #slide-out {
+        overflow: auto;
+        overflow: overlay;
     }
 }
 
@@ -183,10 +214,31 @@ header, main, .copyright, .container {
 }
 ul.nav li a {
     color: #44968f;
-    font-family: fantasy;
+    font-family: fantasy !important;
+    font-family: monospace;
     text-transform: uppercase;
     vertical-align: middle;
     padding: 0 15px;
+}
+
+@-moz-document url-prefix() {
+    .title-head {
+        font-family: monospace;
+        font-size: 30px;
+    }
+    ul.nav li a {
+        font-family: monospace;
+        font-weight: bold;
+    }
+}
+
+.navbar .dropdown-button {
+    display: inline-block;
+}
+
+.side-nav li > a {
+    height: auto;
+    line-height: unset;
 }
 
 ul.nav li a:hover {
