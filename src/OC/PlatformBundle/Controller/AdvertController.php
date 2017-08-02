@@ -24,12 +24,6 @@ use OC\PlatformBundle\Event\MessagePostEvent;
 
 class AdvertController extends Controller
 {
-    public function translationAction($name)
-    {
-        return $this->render('OCPlatformBundle:Advert:translation.html.twig', array(
-            'name' => $name
-        ));
-    }
 
     ///////////////////////////////////////////////////////////////////////////////////
 
@@ -60,31 +54,6 @@ class AdvertController extends Controller
             'page'        => $page,
             'listAdverts' => $listAdverts
         ));
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////
-
-    public function tagAction($id = null, Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $listCategory = $em->getRepository('OCPlatformBundle:Category')->findAll();
-        $listAdvert = $em->getRepository('OCPlatformBundle:Advert')->findAll();
-
-        return $this->render('OCPlatformBundle:Advert:list.html.twig', array(
-            'list_category' => $listCategory,
-            'listAdverts' => $listAdvert,
-            'id_cat' => $id
-        ));
-    }
-    ///////////////////////////////////////////////////////////////////////////////////
-
-    public function purgeAction($day = 60)
-    {
-        $service = $this->container->get('oc_platform.service.deleteAdvert');
-        $listAdverts = $service->purge($day);
-
-        return $this->redirectToRoute('oc_platform_home');
-        //return var_dump($listAdverts);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////
@@ -220,19 +189,6 @@ class AdvertController extends Controller
 
     ///////////////////////////////////////////////////////////////////////////////////
 
-    public function deleteAppAction(Application $app, $id, Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $advert = $app->getAdvert();
-        $advert->removeApplication($app);
-        $em->remove($app);
-        $em->flush();
-
-        return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////
-
     public function lastAnnonceAction($limit)
     {
         $em = $this->getDoctrine()->getManager();
@@ -274,72 +230,6 @@ class AdvertController extends Controller
             'listAdverts' => $listAdverts,
             'showNumber' => true,
         ));
-    }
-
-
-
-
-
-
-
-
-    public function old_indexAction(Request $request)
-    {
-        $advert_id = 0;
-        $session = $request->getSession();
-        $advert_id = $session->get('advert_id');
-
-        /*
-        $url = $this->generateUrl(
-            'oc_platform_view', // 1er argument : le nom de la route
-            array('id' => 5)    // 2e argument : les valeurs des paramètres
-        );
-        return new Response("L'URL de l'annonce d'id 5 est : ".$url);//*/
-        return $this->render('OCPlatformBundle:Advert:oldindex.html.twig', array('nom' => "World", 'advert_id' => $advert_id));
-    }
-
-    public function sendmailAction($email)
-    {
-        $service = $this->container->get('oc_platform.service.service');
-        /*$message = $this->renderView(
-        // app/Resources/views/Emails/registration.html.twig
-            'OCPlatformBundle:Advert:oldindex.html.twig',
-            array('nom' => $email)
-        );*/
-        $object = "plop";
-        $message = "plop";
-        $mailMsg = $service->prepareMail($email, $object, $message, 'text/plain');
-
-        $this->get('mailer')->send($mailMsg);
-
-        return new Response("<body>Hello ".$email." !</body>");
-    }
-
-    public function helloAction($name = "World")
-    {
-        $content = $this->get('templating')->render('OCPlatformBundle:Advert:oldindex.html.twig', array('nom' => $name));
-
-        return new Response($content);
-    }
-
-    public function jsonAction(Request $request)
-    {
-        $advert_id = 0;
-        $session = $request->getSession();
-        $advert_id = $session->get('advert_id');
-
-        return new JsonResponse(array('session_advert_id' => $advert_id));
-    }
-
-    public function sessionAction($advert_id = 0, Request $request)
-    {
-        $session = $request->getSession();
-        $session_advert_id = $session->get('advert_id');
-
-        if($advert_id != 0)
-            $session->set('advert_id', $advert_id);
-
-        return $this->redirectToRoute('oc_platform_view_json');
     }
 }
 

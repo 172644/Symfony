@@ -276,11 +276,11 @@ class UserController extends Controller
                 return $this->render('OCCoreBundle:User:forget.html.twig', array(
                     'error'=>'Compte utilisateur inexistant'
                 ));
-            } elseif ($user->isEnabled() === false) {
+            } else if ($user->isEnabled() === false) {
                 return $this->render('OCCoreBundle:User:forget.html.twig', array(
                     'error'=>'Compte existant mais désactivé'
                 ));
-            } elseif ($user->isAccountNonExpired() === false) {
+            } else if ($user->isAccountNonExpired() === false) {
                 return $this->render('OCCoreBundle:User:forget.html.twig', array(
                     'error'=>'Compte existant mais expiré'
                 ));
@@ -291,6 +291,7 @@ class UserController extends Controller
                 $user->setTokenExpiredAt($dateInSevenDays);
                 $em->flush();
 
+                // TODO: replace this service by core_service
                 $message = \Swift_Message::newInstance()
                     ->setSubject('Réinitialisation de votre mot de passe')
                     ->setFrom([$this->getParameter('mailer_user') => $this->getParameter('siteName')])
@@ -309,6 +310,7 @@ class UserController extends Controller
                     );
 
                 $this->get('mailer')->send($message);
+
                 return $this->render('OCCoreBundle:User:forget.html.twig', array(
                     'error'=>'Un email vient d\'être envoyé sur : '.$user->getEmail()
                 ));

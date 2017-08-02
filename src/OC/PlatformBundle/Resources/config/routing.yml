@@ -13,7 +13,7 @@ oc_platform_home:
 oc_platform_purge:
     path:      /purge/{day}
     defaults:
-        _controller: OCPlatformBundle:Advert:purge
+        _controller: OCPlatformBundle:Utils:purge
     requirements:
         day: \d+
 
@@ -27,7 +27,7 @@ oc_platform_view:
 oc_platform_tag:
     path:      /tag/{id}
     defaults:
-        _controller: OCPlatformBundle:Advert:tag
+        _controller: OCPlatformBundle:Utils:tag
         id:  1
     requirements:
         id: \d*
@@ -54,7 +54,7 @@ oc_platform_delete:
 oc_platform_delete_application:
     path:      /deleteApplication/{id}
     defaults:
-        _controller: OCPlatformBundle:Advert:deleteApp
+        _controller: OCPlatformBundle:Utils:deleteApp
     requirements:
         id: \d+
 
@@ -64,24 +64,24 @@ oc_platform_delete_application:
 
 oc_platform_hello:
     path:      /hello
-    defaults: { _controller: OCPlatformBundle:Advert:hello }
+    defaults: { _controller: OCPlatformBundle:Test:hello }
 
 oc_platform_mail:
     path:      /mail/{email}
-    defaults: { _controller: OCPlatformBundle:Advert:sendmail }
+    defaults: { _controller: OCPlatformBundle:Test:sendmail }
 
 oc_platform_hello_name:
     path:      /hello/{name}
-    defaults: { _controller: OCPlatformBundle:Advert:hello }
+    defaults: { _controller: OCPlatformBundle:Test:hello }
 
 oc_platform_view_json:
     path:      /json
-    defaults: { _controller: OCPlatformBundle:Advert:json }
+    defaults: { _controller: OCPlatformBundle:Test:json }
 
 oc_platform_session:
     path:      /session
-    defaults: { _controller: OCPlatformBundle:Advert:session }
+    defaults: { _controller: OCPlatformBundle:Test:session }
 
 oc_platform_session_id:
     path:      /session/{advert_id}
-    defaults: { _controller: OCPlatformBundle:Advert:session }
+    defaults: { _controller: OCPlatformBundle:Test:session }
