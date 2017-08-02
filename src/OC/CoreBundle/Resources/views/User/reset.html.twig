@@ -12,6 +12,11 @@
     {% if error is defined %}
         <div class="alert alert-danger">{{ error }}</div>
     {% endif %}
+    {% if errors is defined %}
+        {% for _error in errors %}
+            <div class="alert alert-danger">{{ _error.message }}</div>
+        {% endfor %}
+    {% endif %}
     <form action="{{ path('core_user_reset', {'token': token}) }}" method="POST">
         <label for="password">Mot de Passe:</label>
         <input type="password" id="password" name="_password" minlength="6" data-toggle="popover" data-trigger="active" data-placement="bottom" data-content="Minimum : 6 caractères, une majuscule, une minuscule et un chiffre" required/>

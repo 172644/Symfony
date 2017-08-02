@@ -107,6 +107,15 @@ class UserController extends Controller
         $form = $this->createForm(UserType::class, $user);
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
         {
+            $listErrors = $this->get('validator')->validate($user->setPassword($request->get('_password')));
+            if(count($listErrors) > 0) {
+                return $this->render('OCCoreBundle:User:register.html.twig', array(
+                    'form'=>$form->createView(),
+                    'roles'=>$arrayRoleUser,
+                    'errors' => $listErrors,
+                ));
+            }
+
             $userToCompare = $em->getRepository('OCCoreBundle:User')->findOneBy(array(
                 'email'=>$user->getEmail()
             ));
@@ -278,6 +287,12 @@ class UserController extends Controller
 
         if ($request->isMethod('POST')) {
             if ($request->get('_password') == $request->get('_repeated_password')){
+                $listErrors = $this->get('validator')->validate($user->setPassword($request->get('_password')));
+                if(count($listErrors) > 0) {
+                    return $this->render('OCCoreBundle:User:reset.html.twig', array(
+                        'errors' => $listErrors
+                    ));
+                }
 
                 $password = $this->get('security.password_encoder')->encodePassword($user, $request->get('_password'));
                 $user->setPassword($password);
@@ -322,15 +337,20 @@ class UserController extends Controller
 
             if ($request->get('_password') == $request->get('_repeated_password')){
                 if ($this->get('security.password_encoder')->isPasswordValid($user, $request->get('_oldpassword'))) {
+                    $listErrors = $this->get('validator')->validate($user->setPassword($request->get('_password')));
+                    if(count($listErrors) > 0) {
+                        return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
+                            'errors' => $listErrors
+                        ));
+                    }
+
                     $password = $this->get('security.password_encoder')->encodePassword($user, $request->get('_password'));
                     $user->setPassword($password);
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
                     return $this->redirect($this->generateUrl('core_user_profil', array('id' => $user->getId())));
                 } else {
-                    return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
-                        'error'=>'Le mot de passe est incorrect'
-                    ));
+                    return $this->render('OCCoreBundle:User:editPassword.html.twig', array());
                 }
             } else {
                 return $this->render('OCCoreBundle:User:editPassword.html.twig', array(

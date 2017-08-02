@@ -136,13 +136,7 @@ class Image implements \Serializable
         return $this->id;
     }
 
-    public function serialize()
-    {
-        // TODO: Implement serialize() method.
-    }
+    public function serialize(){}
 
-    public function unserialize($serialized)
-    {
-        // TODO: Implement unserialize() method.
-    }
+    public function unserialize($serialized){}
 }
