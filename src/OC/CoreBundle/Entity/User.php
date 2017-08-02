@@ -67,6 +67,10 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255)
+     * @Assert\Regex(
+     *     pattern="/^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$/",
+     *     message="Le mot de passe doit contenir au moins un chiffre, une majuscule, un minuscule et minimum 8 caractères."
+     * )
      */
     private $password;
 

@@ -122,58 +122,17 @@ class UserController extends Controller
                 {
                     if(!empty($request->get('role')) && in_array($request->get('role'), $validRoles))
                     {
-        //              Initialisation des variables
                         $dateInSevenDays = new \DateTime();
                         $dateInSevenDays->add(new \DateInterval('P'.$this->getParameter('tokenExpiration').'D'));
-
-                        $plainPassword = $user->getPassword();
-                        if(strlen($plainPassword) < 6)
-                        {
-                            return $this->render('OCCoreBundle:User:register.html.twig', array(
-                                'message'=> 'Le mot de passe doit être composé de 6 carractères',
-                                'form'=>$form->createView(),
-                                'roles'=>$arrayRoleUser
-                            ));
-                        }
-                        else if(!preg_match('#[A-Z]#', $plainPassword))
-                        {
-                            return $this->render('OCCoreBundle:User:register.html.twig', array(
-                                'message'=> 'Le mot de passe doit contenir au moins une lettre majuscule',
-                                'form'=>$form->createView(),
-                                'roles'=>$arrayRoleUser
-                            ));
-                        }
-                        else if(!preg_match('#[a-z]#', $plainPassword))
-                        {
-                            return $this->render('OCCoreBundle:User:register.html.twig', array(
-                                'message'=> 'Le mot de passe doit contenir au moins une lettre minuscule',
-                                'form'=>$form->createView(),
-                                'roles'=>$arrayRoleUser
-                            ));
-                        }
-                        else if(!preg_match('#[0-9]#', $plainPassword))
-                        {
-                            return $this->render('OCCoreBundle:User:register.html.twig', array(
-                                'message'=> 'Le mot de passe doit contenir au moins unchiffre',
-                                'form'=>$form->createView(),
-                                'roles'=>$arrayRoleUser
-                            ));
-                        }
-        //                Encodage du MDP
                         $encoder = $this->get('security.password_encoder');
-                        $encodedPassword = $encoder->encodePassword($user,$plainPassword);
+                        $encodedPassword = $encoder->encodePassword($user,$user->getPassword());
                         $user->setPassword($encodedPassword);
-        //                Définition du Token d'activation
                         $user->setToken(hash('sha256', $user->getEmail()));
                         $user->setTokenExpiredAt($dateInSevenDays);
-        //                Désactivation du compte
                         $user->setActive(FALSE);
-        //                Définition du role
                         $user->setRoles(array($request->get('role')));
-        //                Persistance de l'entité
                         $em->persist($user);
                         $em->flush();
-        //                Création d'une instance de message
                         $twig = clone $this->get('twig');
                         $message = \Swift_Message::newInstance()
                             ->setSubject('Activation de votre compte')
@@ -267,32 +226,22 @@ class UserController extends Controller
     public function forgetAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         if ($request->isMethod('POST')){
+            $user = $em->getRepository('OCCoreBundle:User')->findOneBy(array('email'=>$request->get('_email')));
 
-            $user = $em->getRepository('OCCoreBundle:User')->findOneBy(array(
-                'email'=>$request->get('_email')
-            ));
+            if ($user === null || $user->isEnabled() === false || $user->isAccountNonExpired() === false){
+                return $this->render('OCCoreBundle:User:forget.html.twig', array(
+                    'error'=>($user === null)?'Compte utilisateur inexistant':(($user->isEnabled() === false)?'Compte existant mais désactivé':'Compte existant mais expiré')
+                ));
+            }
 
-            if ($user === null){
-                return $this->render('OCCoreBundle:User:forget.html.twig', array(
-                    'error'=>'Compte utilisateur inexistant'
-                ));
-            } else if ($user->isEnabled() === false) {
-                return $this->render('OCCoreBundle:User:forget.html.twig', array(
-                    'error'=>'Compte existant mais désactivé'
-                ));
-            } else if ($user->isAccountNonExpired() === false) {
-                return $this->render('OCCoreBundle:User:forget.html.twig', array(
-                    'error'=>'Compte existant mais expiré'
-                ));
-            } else {
-                $dateInSevenDays = new \DateTime();
-                $dateInSevenDays->add(new \DateInterval('P'.$this->getParameter('tokenExpiration').'D'));
-                $user->setToken(hash('sha256', $user->getEmail()));
-                $user->setTokenExpiredAt($dateInSevenDays);
-                $em->flush();
+            $dateInSevenDays = new \DateTime();
+            $dateInSevenDays->add(new \DateInterval('P'.$this->getParameter('tokenExpiration').'D'));
+            $user->setToken(hash('sha256', $user->getEmail()));
+            $user->setTokenExpiredAt($dateInSevenDays);
+            $em->flush();
 
-                // TODO: replace this service by core_service
-                $message = \Swift_Message::newInstance()
+            $this->get('mailer')->send(
+                \Swift_Message::newInstance()
                     ->setSubject('Réinitialisation de votre mot de passe')
                     ->setFrom([$this->getParameter('mailer_user') => $this->getParameter('siteName')])
                     ->setTo($user->getEmail())
@@ -307,14 +256,12 @@ class UserController extends Controller
                         )
                     ),
                         'text/html'
-                    );
+                    )
+            );
 
-                $this->get('mailer')->send($message);
-
-                return $this->render('OCCoreBundle:User:forget.html.twig', array(
-                    'error'=>'Un email vient d\'être envoyé sur : '.$user->getEmail()
-                ));
-            }
+            return $this->render('OCCoreBundle:User:forget.html.twig', array(
+                'error'=>'Un email vient d\'être envoyé sur : '.$user->getEmail()
+            ));
         }
         return $this->render('OCCoreBundle:User:forget.html.twig');
     }
@@ -330,32 +277,6 @@ class UserController extends Controller
         ));
 
         if ($request->isMethod('POST')) {
-            $plainPassword = $request->get('_password');
-            if(strlen($plainPassword) < 6)
-            {
-                return $this->render('OCCoreBundle:User:reset.html.twig', array(
-                    'error'=> 'Le mot de passe doit être composé de 6 carractères',
-                ));
-            }
-            else if(!preg_match('#[A-Z]#', $plainPassword))
-            {
-                return $this->render('OCCoreBundle:User:reset.html.twig', array(
-                    'error'=> 'Le mot de passe doit contenir au moins une lettre majuscule',
-                ));
-            }
-            else if(!preg_match('#[a-z]#', $plainPassword))
-            {
-                return $this->render('OCCoreBundle:User:reset.html.twig', array(
-                    'error'=> 'Le mot de passe doit contenir au moins une lettre minuscule',
-                ));
-            }
-            else if(!preg_match('#[0-9]#', $plainPassword))
-            {
-                return $this->render('OCCoreBundle:User:reset.html.twig', array(
-                    'error'=> 'Le mot de passe doit contenir au moins unchiffre',
-                ));
-            }
-
             if ($request->get('_password') == $request->get('_repeated_password')){
 
                 $password = $this->get('security.password_encoder')->encodePassword($user, $request->get('_password'));
@@ -398,33 +319,8 @@ class UserController extends Controller
     public function changePasswordAction(Request $request, User $user, $id){
 
         if ($request->isMethod('POST')) {
-            $plainPassword = $request->get('_password');
-            if(strlen($plainPassword) < 6)
-            {
-                return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
-                    'error'=> 'Le mot de passe doit être composé de 6 carractères',
-                ));
-            }
-            else if(!preg_match('#[A-Z]#', $plainPassword))
-            {
-                return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
-                    'error'=> 'Le mot de passe doit contenir au moins une lettre majuscule',
-                ));
-            }
-            else if(!preg_match('#[a-z]#', $plainPassword))
-            {
-                return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
-                    'error'=> 'Le mot de passe doit contenir au moins une lettre minuscule',
-                ));
-            }
-            else if(!preg_match('#[0-9]#', $plainPassword))
-            {
-                return $this->render('OCCoreBundle:User:editPassword.html.twig', array(
-                    'error'=> 'Le mot de passe doit contenir au moins unchiffre',
-                ));
-            }
 
-            if ($plainPassword == $request->get('_repeated_password')){
+            if ($request->get('_password') == $request->get('_repeated_password')){
                 if ($this->get('security.password_encoder')->isPasswordValid($user, $request->get('_oldpassword'))) {
                     $password = $this->get('security.password_encoder')->encodePassword($user, $request->get('_password'));
                     $user->setPassword($password);
