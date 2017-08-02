@@ -18,7 +18,6 @@ class ApplicationRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin('app.advert', 'a')
             ->addSelect('a');
 
-        //$qb->orderBy('app.date', 'DESC');
         $qb->setMaxResults($limit);
 
 

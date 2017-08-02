@@ -87,7 +87,6 @@ class Image implements \Serializable
     public function setImageFile(File $image = null)
     {
         $this->imageFile = $image;
-        //$this->imageName = $this->id . $image->guessExtension();
 
         if ($image instanceof UploadedFile) {
             // It is required that at least one field changes if you are using doctrine

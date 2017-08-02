@@ -16,8 +16,7 @@ class OCService
     {
         $object = 'Nouvelle candidature';
         $message = 'Vous avez reçu une nouvelle candidature.';
-        //$this->mailer->send($this->prepareMail($application->getAdvert()->getAuthor(), $object, $message, 'text/plain'));
-        $this->mailer->send($this->prepareMail('172644@supinfo.com', $object, $message, 'text/plain'));
+        $this->mailer->send($this->prepareMail($application->getAdvert()->getAuthor()->getEmail(), $object, $message, 'text/plain'));
     }
 
     public function prepareMail($email, $object, $body, $contentType = null, $charset = null)
@@ -38,7 +37,6 @@ class OCService
 
         $headers = $message->getHeaders();
         $headers->addTextHeader('From', 'OCPlatform@namkin.fr');
-        //$message->attach(Swift_Attachment::fromPath('my-document.pdf')->setFilename('cool.pdf'));
 
 
         return $message;

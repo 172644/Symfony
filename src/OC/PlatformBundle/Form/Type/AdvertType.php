@@ -1,6 +1,6 @@
 <?php
 
-namespace OC\PlatformBundle\Form;
+namespace OC\PlatformBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
 use OC\PlatformBundle\Entity\Category;
@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use OC\PlatformBundle\Form\CkeditorType;
+use OC\PlatformBundle\Form\Type\CkeditorType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -29,20 +29,6 @@ class AdvertType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /*
-        $builder
-            ->add('date')
-            ->add('title')
-            ->add('author')
-            ->add('content')
-            ->add('published')
-            ->add('updatedAt')
-            ->add('slug')
-            ->add('nbApplications')
-            ->add('image')
-            ->add('categories');//*/
-        $pattern = 'D%';
-
         $builder
             ->add('date',      DateTimeType::class)
             ->add('title',     TextType::class)
@@ -87,8 +73,6 @@ class AdvertType extends AbstractType
                     // Sinon, on le supprime
                     $event->getForm()->remove('published');
                 }
-                //var_dump($advert);
-                //exit;
             }
         );
 
@@ -111,11 +95,11 @@ class AdvertType extends AbstractType
 
                 $newCat = array();
 
-                if(!empty($advert['categories_']) && $advert['categories_'] != null) {
+                if(!empty($advert['categories_']) && $advert['categories_'] !== null) {
                     foreach ($advert['categories_'] as $_cat) {
                         $_name = $_cat['name'];
 
-                        if(empty($categorieName[$_name]) || $categorieName[$_name] == null) {
+                        if(empty($categorieName[$_name]) || $categorieName[$_name] === null) {
                             $_category = new Category();
                             $_category->setName($_name);
                             if(!in_array($_category, $newCat))
@@ -150,9 +134,9 @@ class AdvertType extends AbstractType
                     return; // On sort de la fonction sans rien faire lorsque $advert vaut null
                 }
 
-                if(!empty($this->newCat) && $this->newCat != null) {
+                if(!empty($this->newCat) && $this->newCat !== null) {
                     foreach ($this->newCat as $_cat) {
-                        if (empty($categorieName[$_cat->getName()]) || $categorieName[$_cat->getName()] == null)
+                        if (empty($categorieName[$_cat->getName()]) || $categorieName[$_cat->getName()] === null)
                             $advert->addCategory($_cat);
                     }
                 }
@@ -161,33 +145,6 @@ class AdvertType extends AbstractType
                 dump($advert);
             }
         );
-
-//        $builder->get('categories_')->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
-//            $data = $event->getData();
-//            $form = $event->getForm();
-//
-//            dump($data);
-//
-//            $this->newcat = $data;
-//
-//            // ou
-//            // inutile car on fait $builder->get('newcategories') au départ
-//            // $newcat = $form->getData('newcategories');
-//            // $this->newcat = $data['newcategories'];
-//        });
-
-
-//        $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event)  {
-//            $data = $event->getData();
-//            dump($data);
-//            if ( null != $this->newcat) {
-//                foreach ($this->newcat as $newcat) {
-//                    $cate = new Category();
-//                    $cate->setName($newcat['name']);
-//                    $data->addCategory($cate);
-//                }
-//            }
-//        });
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace OC\PlatformBundle\Controller;
 
-use OC\PlatformBundle\Form\ApplicationType;
+use OC\PlatformBundle\Form\Type\ApplicationType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,8 +16,8 @@ use OC\PlatformBundle\Entity\Category;
 use OC\PlatformBundle\Entity\AdvertSkill;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use OC\PlatformBundle\Form\AdvertType;
-use OC\PlatformBundle\Form\AdvertEditType;
+use OC\PlatformBundle\Form\Type\AdvertType;
+use OC\PlatformBundle\Form\Type\AdvertEditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use OC\PlatformBundle\Event\PlatformEvents;
 use OC\PlatformBundle\Event\MessagePostEvent;
@@ -29,7 +29,6 @@ class AdvertController extends Controller
 
     public function indexAction($page = 1, Request $request)
     {
-        //dump($this->get('kernel')->getEnvironment());
         if ($page < 1)
         {
             $session = $request->getSession();
@@ -61,16 +60,6 @@ class AdvertController extends Controller
     public function viewAction(Advert $advert, $id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        /*$advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
-
-        if (null === $advert) {
-
-            $session = $request->getSession();
-            $session->getFlashBag()->add('info', "L'annonce d'id ".$id." n'existe pas.");
-            return $this->redirectToRoute('oc_platform_home');
-
-            //throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
-        }*/
 
         $app = new Application();
         $app->setAuthor($this->getUser());
@@ -161,7 +150,6 @@ class AdvertController extends Controller
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
         {
-            //$em->remove($em->getRepository('OCPlatformBundle:Advert')->find($id));
             $em->merge($form->getData());
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée.');
@@ -203,14 +191,6 @@ class AdvertController extends Controller
 
     public function lastApplicationAction(User $user)
     {
-        //$em = $this->getDoctrine()->getManager();
-        /*$listApps = $user->getApplications();
-        $listAdverts = array();
-        foreach ($listApps as $_app)
-        {
-            if($_app->getDate() != new \Datetime())
-                $listAdverts[] = $_app->getAdvert();
-        }*/
         $em = $this->getDoctrine()->getManager();
         $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->getAdvertByApplicationAuthor($user);
 

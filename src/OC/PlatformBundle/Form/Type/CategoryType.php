@@ -1,6 +1,6 @@
 <?php
 
-namespace OC\PlatformBundle\Form;
+namespace OC\PlatformBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,28 +12,24 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Vich\UploaderBundle\Form\Type\VichFileType as Vich;
 
-class ImageType extends AbstractType
+class CategoryType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            //->add('file', FileType::class);
-            ->add('imageFile', Vich::class);
+        $builder->add('name', TextType::class);
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'OC\PlatformBundle\Entity\Image'
+            'data_class' => 'OC\PlatformBundle\Entity\Category'
         ));
     }
 
@@ -42,7 +38,7 @@ class ImageType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'oc_platformbundle_image';
+        return 'oc_platformbundle_category';
     }
 
 

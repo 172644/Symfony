@@ -1,6 +1,6 @@
 <?php
 
-namespace OC\PlatformBundle\Form;
+namespace OC\PlatformBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
 use OC\PlatformBundle\Entity\Category;
@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use OC\PlatformBundle\Form\CkeditorType;
+use OC\PlatformBundle\Form\Type\CkeditorType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 

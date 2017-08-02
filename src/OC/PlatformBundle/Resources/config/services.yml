@@ -38,7 +38,7 @@ services:
 
 
     oc_platform.form.ckeditor:
-        class: OC\PlatformBundle\Form\CkeditorType
+        class: OC\PlatformBundle\Form\Type\CkeditorType
         tags:
             - { name: form.type, alias: ckeditor }
 
@@ -56,7 +56,7 @@ services:
 #            - { name: kernel.event_listener, event: kernel.response,   method: processBeta }
 
     app.form.type.custom_element:
-        class: OC\PlatformBundle\Form\AdverType
+        class: OC\PlatformBundle\Form\Type\AdverType
         arguments:
             - "@doctrine.orm.entity_manager"
         tags:

@@ -2,7 +2,7 @@
 
 namespace OC\PlatformBundle\Controller;
 
-use OC\PlatformBundle\Form\ApplicationType;
+use OC\PlatformBundle\Form\Type\ApplicationType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,8 +16,8 @@ use OC\PlatformBundle\Entity\Category;
 use OC\PlatformBundle\Entity\AdvertSkill;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use OC\PlatformBundle\Form\AdvertType;
-use OC\PlatformBundle\Form\AdvertEditType;
+use OC\PlatformBundle\Form\Type\AdvertType;
+use OC\PlatformBundle\Form\Type\AdvertEditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use OC\PlatformBundle\Event\PlatformEvents;
 use OC\PlatformBundle\Event\MessagePostEvent;

@@ -1,7 +1,7 @@
 <?php
 // src/OC/PlatformBundle/Form/CkeditorType.php
 
-namespace OC\PlatformBundle\Form;
+namespace OC\PlatformBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
