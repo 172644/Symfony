@@ -32,8 +32,8 @@
         "symfony/swiftmailer-bundle": "^2.3.10",
         "symfony/symfony": "3.3.*",
         "twig/twig": "^1.0||^2.0",
-        "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "doctrine/data-fixtures": "@dev",
+        "doctrine/doctrine-fixtures-bundle": "master",
+        "doctrine/data-fixtures": "master",
 		"stof/doctrine-extensions-bundle": "^1.2.2",
 		"vich/uploader-bundle": "1.6.2",
 		"coresphere/console-bundle": "~0.4"
