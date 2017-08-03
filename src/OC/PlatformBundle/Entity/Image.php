@@ -55,6 +55,22 @@ class Image implements \Serializable
     private $updatedAt;
 
     /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
      * @param \DateTime $updatedAt
      */
     public function setUpdatedAtNow()

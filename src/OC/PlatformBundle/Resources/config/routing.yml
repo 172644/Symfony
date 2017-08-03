@@ -1,6 +1,6 @@
 oc_platform_oldhome:
     path:      /old/
-    defaults: { _controller: OCPlatformBundle:Advert:old_index }
+    defaults: { _controller: OCPlatformBundle:Advert:oldIndex }
 
 oc_platform_home:
     path:      /{page}

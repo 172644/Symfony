@@ -24,7 +24,7 @@ use OC\PlatformBundle\Event\MessagePostEvent;
 
 class TestController extends Controller
 {
-    public function old_indexAction(Request $request)
+    public function oldIndexAction(Request $request)
     {
         $advert_id = 0;
         $session = $request->getSession();
