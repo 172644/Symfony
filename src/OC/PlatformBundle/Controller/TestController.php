@@ -75,7 +75,6 @@ class TestController extends Controller
     public function sessionAction($advert_id = 0, Request $request)
     {
         $session = $request->getSession();
-        $session_advert_id = $session->get('advert_id');
 
         if($advert_id != 0)
             $session->set('advert_id', $advert_id);

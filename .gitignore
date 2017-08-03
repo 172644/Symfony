@@ -48,9 +48,6 @@
 # Composer PHAR
 /composer.phar
 
-# PHP Storm
-.idea/*
-
 # =========================
 # Operating System Files
 # =========================
@@ -58,7 +55,6 @@
 # OSX
 # =========================
 
-.DS_Store
 .AppleDouble
 .LSOverride
 
@@ -82,10 +78,6 @@ Temporary Items
 
 # Windows
 # =========================
-
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
 
 # Folder config file
 Desktop.ini

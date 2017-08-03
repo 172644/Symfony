@@ -142,7 +142,6 @@ class UserController extends Controller
                         $user->setRoles(array($request->get('role')));
                         $em->persist($user);
                         $em->flush();
-                        $twig = clone $this->get('twig');
                         $message = \Swift_Message::newInstance()
                             ->setSubject('Activation de votre compte')
                             ->setFrom([$this->getParameter('mailer_user') => $this->getParameter('siteName')])

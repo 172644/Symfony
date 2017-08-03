@@ -3,14 +3,6 @@ services:
 #        class: OC\PlatformBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
 
-    oc_platform.antispam:
-        class: OC\PlatformBundle\Antispam\OCAntispam
-        arguments:
-            - "@mailer"
-            - 50
-        calls:
-            - [ setLocale, [%locale%] ]
-
     oc_platform.service.service:
         class: OC\PlatformBundle\Service\OCService
         arguments:
@@ -27,14 +19,6 @@ services:
             - "@oc_platform.service.service"
         tags:
             - { name: doctrine.event_listener, event: postPersist }
-
-
-    oc_platform.twig.antispam_extension:
-        class: OC\PlatformBundle\Service\Twig\AntispamExtension
-        arguments:
-            - "@oc_platform.antispam"
-        tags:
-            - { name: twig.extension }
 
 
     oc_platform.form.ckeditor:

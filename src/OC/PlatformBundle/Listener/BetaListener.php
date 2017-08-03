@@ -38,9 +38,7 @@ class BetaListener
         }
 
         // On utilise notre BetaHRML
-        $response = $this->betaHTML->addBeta($event->getResponse(), $remainingDays);
-
-        // On récupère la réponse que le gestionnaire a insérée dans l'évènement
-        $response = $event->getResponse();
+        $this->betaHTML->addBeta($event->getResponse(), $remainingDays);
+        $event->getResponse();
     }
 }

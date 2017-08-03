@@ -44,7 +44,7 @@ class UtilsController extends Controller
     public function purgeAction($day = 60)
     {
         $service = $this->container->get('oc_platform.service.deleteAdvert');
-        $listAdverts = $service->purge($day);
+        $service->purge($day);
 
         return $this->redirectToRoute('oc_platform_home');
     }
