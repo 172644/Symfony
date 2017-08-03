@@ -1,0 +1,7 @@
+{% for _role in user.roles %}
+    {% for param_role in security_roles %}
+        {% if param_role.val == _role %}
+            <span class="label label-{{ param_role.color }}">{{ param_role.str }}</span>
+        {% endif %}
+    {% endfor %}
+{% endfor %}

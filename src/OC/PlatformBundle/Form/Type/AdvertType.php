@@ -30,7 +30,6 @@ class AdvertType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date',      DateTimeType::class)
             ->add('title',     TextType::class)
             ->add('content',   CkeditorType::class)
             ->add('published', CheckboxType::class, array('required' => false))

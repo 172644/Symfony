@@ -15,11 +15,11 @@
                 <div class="col-md-3 col-lg-3 " align="center"> <img alt="{{ user.username }} image" src="{{ asset('uploads/anon_user.png') }}" class="img-responsive"> </div>
             {% else %}
                 {% if user == app.user %}
+                    <div class="col-md-3 col-lg-3 " align="center">
+                        <a href="{{ path('core_user_delete_img', {'id': user.id}) }}" class="btn btn-danger" id="delete_img">Supprimer</a>
+                        <img alt="{{ user.username }} image" src="{{ asset(user.image.webPath) }}" class="img-responsive">
+                    </div>
                 {% endif %}
-                <div class="col-md-3 col-lg-3 " align="center">
-                    <a href="{{ path('core_user_delete_img', {'id': user.id}) }}" class="btn btn-danger" id="delete_img">Supprimer</a>
-                    <img alt="{{ user.username }} image" src="{{ asset(user.image.webPath) }}" class="img-responsive">
-                </div>
             {% endif %}
 
             <div class=" col-md-9 col-lg-9">
@@ -36,13 +36,7 @@
                         <tr>
                             <th>Rôle :</th>
                             <td>
-                                {% for _role in user.roles %}
-                                    {% for param_role in security_roles %}
-                                        {% if param_role.val == _role %}
-                                            <span class="label label-{{ param_role.color }}">{{ param_role.str }}</span>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endfor %}
+                                {% include('OCCoreBundle::User/utils/view_role.html.twig') %}
                             </td>
                         </tr>
                         <tr>
@@ -88,78 +82,7 @@
                         </tr>
                     </tbody>
                 </table>
-
-
-                <ul class="collapsible" data-collapsible="accordion">
-
-                    {% if user.adverts|length > 0 %}
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons">description</i>Annonces</div>
-                            <div class="collapsible-body">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Annonce</th>
-                                        <th>Postulants</th>
-                                    </tr>
-                                    </thead>
-
-                                    <tbody>
-                                    {% for _advert in user.adverts %}
-                                        <tr>
-                                            <td>{{ _advert.date|date("H:i m/d/Y") }}</td>
-                                            <td>
-                                                <a href="{{ path('oc_platform_view', {'id': _advert.id}) }}">
-                                                    {#{% if _advert.image is not null %}#}
-                                                        {#<img src="{{ asset(_advert.image.webPath) }}" alt="" class="img-rounded small-pics">#}
-                                                    {#{% endif %}#}
-                                                    {{ _advert.title }}
-                                                </a>
-                                            </td>
-                                            <td>{{ _advert.nbApplications }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </li>
-                    {% endif %}
-
-                    {% if user.applications|length > 0 %}
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons">insert_comment</i>Demandes</div>
-                            <div class="collapsible-body">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Annonce</th>
-                                        <th>Auteur de l'annonce</th>
-                                    </tr>
-                                    </thead>
-
-                                    <tbody>
-                                    {% for _app in user.applications %}
-                                        <tr>
-                                            <td>{{ _app.date|date("H:i m/d/Y") }}</td>
-                                            <td>
-                                                <a href="{{ path('oc_platform_view', {'id': _app.advert.id}) }}">
-                                                    {#{% if _app.advert.image is not null %}#}
-                                                        {#<img src="{{ asset(_app.advert.image.webPath) }}" alt="" class="img-rounded small-pics">#}
-                                                    {#{% endif %}#}
-                                                    {{ _app.advert.title }}
-                                                </a>
-                                            </td>
-                                            <td><a href="{{ path('core_user_profil', {'id': _app.advert.author.id}) }}">{{ _app.advert.author.username }}</a></td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </li>
-                    {% endif %}
-                </ul>
+                {% include('OCCoreBundle::User/utils/view_advert_and_app.html.twig') %}
             </div>
         </div>
     </div>

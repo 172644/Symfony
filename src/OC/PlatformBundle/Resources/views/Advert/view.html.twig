@@ -42,79 +42,74 @@
             {% if not advert.categories.empty %}
                 <p>
                     Catégories :
-                    {% for category in advert.categories %}
-                        {#{{ category.name }}{% if not loop.last %}, {% endif %}#}
-                        {% include'OCPlatformBundle:Advert:category.html.twig' with {'_cat': category} %}
-                    {% endfor %}
+                    {% include'OCPlatformBundle:Advert:utils/category.html.twig' with {'_categories': advert.categories} %}
                 </p>
             {% endif %}
         </div>
     </div>
 
-    <div>
-        {% if is_granted('ROLE_SEARCH') %}
-            <div class="well">
-                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-                {{ form_errors(form) }}
-                {{ form_widget(form.content) }}
-                {{ form_widget(form.Postuler, {'attr': {'class': 'btn btn-primary'}}) }}
-                {{ form_end(form) }}
-            </div>
-        {% endif %}
+    {% if is_granted('ROLE_SEARCH') %}
+        <div class="well">
+            {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form.content) }}
+            {{ form_widget(form.Postuler, {'attr': {'class': 'btn btn-primary'}}) }}
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
 
-        {% if listApplications is defined %}
+    {% if listApplications is defined %}
 
-            {% set occurence = 0 %}
-            {% for _app in listApplications %}
-                {% if _app.author == app.user %}
-                    {% set occurence = 1 %}
-                {% endif %}
-            {% endfor %}
-
-            {% if (occurence > 0) or (is_granted('ROLE_AUTEUR') and advert.author.username == app.user.username) or (is_granted('ROLE_ADMIN')) %}
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Auteur</th>
-                            <th>Détail</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                            {% if  listApplications|length > 0 %}
-                                {% for _app in listApplications %}
-                                    {% if _app.author == app.user or is_granted('ROLE_AUTEUR') or (is_granted('ROLE_ADMIN')) %}
-                                        <tr>
-                                            <td>{{ _app.date|date("H:i m/d/Y") }}</td>
-                                            <td><a href="{{ path('core_user_profil', {'id': _app.author.id}) }}">{{ _app.author.username }}</a></td>
-                                            <td>{{ _app.content }}</td>
-                                            <td>
-                                                <a href="{{ path('oc_platform_delete_application', {'id': _app.id}) }}" class="btn btn-danger">
-                                                    <i class="material-icons">delete</i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                            {% else %}
-                                <tr>
-                                    <td rowspan="3">[ AUCUN POSTULANT ]</td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
+        {% set occurence = 0 %}
+        {% for _app in listApplications %}
+            {% if _app.author == app.user %}
+                {% set occurence = 1 %}
             {% endif %}
+        {% endfor %}
+
+        {% if (occurence > 0) or (is_granted('ROLE_AUTEUR') and advert.author.username == app.user.username) or (is_granted('ROLE_ADMIN')) %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Auteur</th>
+                        <th>Détail</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        {% if  listApplications|length > 0 %}
+                            {% for _app in listApplications %}
+                                {% if _app.author == app.user or is_granted('ROLE_AUTEUR') or (is_granted('ROLE_ADMIN')) %}
+                                    <tr>
+                                        <td>{{ _app.date|date("H:i m/d/Y") }}</td>
+                                        <td><a href="{{ path('core_user_profil', {'id': _app.author.id}) }}">{{ _app.author.username }}</a></td>
+                                        <td>{{ _app.content }}</td>
+                                        <td>
+                                            <a href="{{ path('oc_platform_delete_application', {'id': _app.id}) }}" class="btn btn-danger">
+                                                <i class="material-icons">delete</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td rowspan="3">[ AUCUN POSTULANT ]</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
         {% endif %}
-        {% if listAdvertSkill is defined %}
-            <ul>
-                {% for advertSkill in listAdvertSkill %}
-                    <li>{{ advertSkill.Skill.name ~ ' : ' ~ advertSkill.level}}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
+    {% endif %}
+    {% if listAdvertSkill is defined %}
+        <ul>
+            {% for advertSkill in listAdvertSkill %}
+                <li>{{ advertSkill.Skill.name ~ ' : ' ~ advertSkill.level}}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
 
 {% endblock %}

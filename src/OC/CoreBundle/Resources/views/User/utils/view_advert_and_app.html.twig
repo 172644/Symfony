@@ -1,0 +1,73 @@
+
+
+
+<ul class="collapsible" data-collapsible="accordion">
+
+    {% if user.adverts|length > 0 %}
+        <li>
+            <div class="collapsible-header"><i class="material-icons">description</i>Annonces</div>
+            <div class="collapsible-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Annonce</th>
+                        <th>Postulants</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for _advert in user.adverts %}
+                        <tr>
+                            <td>{{ _advert.date|date("H:i m/d/Y") }}</td>
+                            <td>
+                                <a href="{{ path('oc_platform_view', {'id': _advert.id}) }}">
+                                    {#{% if _advert.image is not null %}#}
+                                    {#<img src="{{ asset(_advert.image.webPath) }}" alt="" class="img-rounded small-pics">#}
+                                    {#{% endif %}#}
+                                    {{ _advert.title }}
+                                </a>
+                            </td>
+                            <td>{{ _advert.nbApplications }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    {% endif %}
+
+    {% if user.applications|length > 0 %}
+        <li>
+            <div class="collapsible-header"><i class="material-icons">insert_comment</i>Demandes</div>
+            <div class="collapsible-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Annonce</th>
+                        <th>Auteur de l'annonce</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for _app in user.applications %}
+                        <tr>
+                            <td>{{ _app.date|date("H:i m/d/Y") }}</td>
+                            <td>
+                                <a href="{{ path('oc_platform_view', {'id': _app.advert.id}) }}">
+                                    {#{% if _app.advert.image is not null %}#}
+                                    {#<img src="{{ asset(_app.advert.image.webPath) }}" alt="" class="img-rounded small-pics">#}
+                                    {#{% endif %}#}
+                                    {{ _app.advert.title }}
+                                </a>
+                            </td>
+                            <td><a href="{{ path('core_user_profil', {'id': _app.advert.author.id}) }}">{{ _app.advert.author.username }}</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    {% endif %}
+</ul>

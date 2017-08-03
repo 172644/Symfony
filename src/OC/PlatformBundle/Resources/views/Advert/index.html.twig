@@ -10,9 +10,7 @@
 
 {% block ocplatform_body %}
     <p>
-    {% for message in app.session.flashbag.get('info') %}
-        <div class="alert alert-info">Info : {{ message }}</div>
-    {% endfor %}
+        {% include('OCPlatformBundle:Advert:utils/info_message.html.twig') %}
     </p>
 
     <ul class="collection">
@@ -31,9 +29,7 @@
                 </p>
 
                 <div>
-                    {% for category in advert.categories %}
-                        {% include'OCPlatformBundle:Advert:category.html.twig' with {'_cat': category} %}
-                    {% endfor %}
+                    {% include'OCPlatformBundle:Advert:utils/category.html.twig' with {'_categories': advert.categories} %}
                 </div>
             </li>
         {% else %}

@@ -5,17 +5,6 @@
 
 <div class="well">
 
-    {% if form.date is defined %}
-        <div class="form-group">
-            {{ form_label(form.date, "Date", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-            {{ form_errors(form.date) }}
-
-            <div class="col-sm-10">
-                {{ form_widget(form.date) }}
-            </div>
-        </div>
-    {% endif %}
-
     <div class="form-group">
         {{ form_label(form.title, "Titre de l'annonce", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
         {{ form_errors(form.title) }}
@@ -84,16 +73,14 @@
         </div>
     </div>
 
-    {% if advert is defined %}
-        {% if advert.image is defined and advert.image is not null %}
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Image actuelle</label>
+    {% if advert is defined and advert.image is defined and advert.image is not null %}
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Image actuelle</label>
 
-                <div class="col-sm-10">
-                    <img src="{{ asset(advert.image.webPath) }}" class="img-rounded materialboxed"/>
-                </div>
+            <div class="col-sm-10">
+                <img src="{{ asset(advert.image.webPath) }}" class="img-rounded materialboxed"/>
             </div>
-        {% endif %}
+        </div>
     {% endif %}
 
     <div class="form-group">
