@@ -1,0 +1,36 @@
+
+{% if (occurence > 0) or (is_granted('ROLE_AUTEUR') and advert.author.username == app.user.username) or (is_granted('ROLE_ADMIN')) %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Auteur</th>
+            <th>Détail</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% if  listApplications|length > 0 %}
+            {% for _app in listApplications %}
+                {% if _app.author == app.user or is_granted('ROLE_AUTEUR') or (is_granted('ROLE_ADMIN')) %}
+                    <tr>
+                        <td>{{ _app.date|date("H:i m/d/Y") }}</td>
+                        <td><a href="{{ path('core_user_profil', {'id': _app.author.id}) }}">{{ _app.author.username }}</a></td>
+                        <td>{{ _app.content }}</td>
+                        <td>
+                            <a href="{{ path('oc_platform_delete_application', {'id': _app.id}) }}" class="btn btn-danger">
+                                <i class="material-icons">delete</i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td rowspan="3">[ AUCUN POSTULANT ]</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+{% endif %}

@@ -1,10 +1,14 @@
 
 
-{% for _cat in _categories %}
-    {#{{ category.name }}{% if not loop.last %}, {% endif %}#}
-    <a href="{{ path('oc_platform_tag', {'id': _cat.id}) }}#{{ _cat.id }}" style="padding: 0 2px;">
-        <span class="label label-{{ bootstrap_color[_cat.id%(bootstrap_color|length - 1)] }}">
-            {{ _cat.name }}
-        </span>
-    </a>
-{% endfor %}
+{% if _categories is defined and not _categories.empty %}
+    {% for _cat in _categories %}
+        {#{{ category.name }}{% if not loop.last %}, {% endif %}#}
+        <a href="{{ path('oc_platform_tag', {'id': _cat.id}) }}#{{ _cat.id }}" style="padding: 0 2px;">
+            <span class="label label-{{ bootstrap_color[_cat.id%(bootstrap_color|length - 1)] }}">
+                {{ _cat.name }}
+            </span>
+        </a>
+    {% endfor %}
+{% else %}
+    [ Aucune catégorie ]
+{% endif %}

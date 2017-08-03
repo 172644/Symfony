@@ -1,0 +1,11 @@
+{% if listApplications is defined %}
+
+    {% set occurence = 0 %}
+    {% for _app in listApplications %}
+        {% if _app.author == app.user %}
+            {% set occurence = 1 %}
+        {% endif %}
+    {% endfor %}
+
+    {% include'OCPlatformBundle:Advert:utils/application_table.html.twig' with {'occurence': occurence} %}
+{% endif %}
