@@ -11,13 +11,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserController extends Controller
 {
-    public function loginAction(){
+    public function loginAction(Request $request){
         $authenticationUtils = $this->get('security.authentication_utils');
 
         return $this->render('OCCoreBundle:User:login.html.twig', array(
 //        return $this->render('@Front/User/login.html.twig', array(
             'last_username' => $authenticationUtils->getLastUsername(),
             'error'         => $authenticationUtils->getLastAuthenticationError(),
+            'hiddenToken'   => $request->get('token')
         ));
     }
 
@@ -107,7 +108,7 @@ class UserController extends Controller
         $form = $this->createForm(UserType::class, $user);
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid())
         {
-            $listErrors = $this->get('validator')->validate($user->setPassword($request->get('_password')));
+            $listErrors = $this->get('validator')->validate($user->setPassword($user->getPassword()));
             if(count($listErrors) > 0) {
                 return $this->render('OCCoreBundle:User:register.html.twig', array(
                     'form'=>$form->createView(),
@@ -133,9 +134,9 @@ class UserController extends Controller
                     {
                         $dateInSevenDays = new \DateTime();
                         $dateInSevenDays->add(new \DateInterval('P'.$this->getParameter('tokenExpiration').'D'));
-                        $encoder = $this->get('security.password_encoder');
-                        $encodedPassword = $encoder->encodePassword($user,$user->getPassword());
-                        $user->setPassword($encodedPassword);
+                        //$encodedPassword = $this->get('security.password_encoder')->encodePassword($user, $request->get('_password'));
+                        //$user->setPassword($encodedPassword);
+                        $user->setPassword($this->get('security.password_encoder')->encodePassword($user,$user->getPassword()));
                         $user->setToken(hash('sha256', $user->getEmail()));
                         $user->setTokenExpiredAt($dateInSevenDays);
                         $user->setActive(FALSE);
@@ -161,7 +162,7 @@ class UserController extends Controller
                                 'text/html'
                             );
                         $this->get('mailer')->send($message);
-                        return $this->redirectToRoute('oc_core_homepage');
+                        return $this->redirectToRoute('core_user_login', array('token'=>$user->getToken()));
                     } else {
                         return $this->render('OCCoreBundle:User:register.html.twig', array(
                             'message'=> 'Rôle invalide',
@@ -235,7 +236,6 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         if ($request->isMethod('POST')){
             $user = $em->getRepository('OCCoreBundle:User')->findOneBy(array('email'=>$request->get('_email')));
-
             if ($user === null || $user->isEnabled() === false || $user->isAccountNonExpired() === false){
                 return $this->render('OCCoreBundle:User:forget.html.twig', array(
                     'error'=>($user === null)?'Compte utilisateur inexistant':(($user->isEnabled() === false)?'Compte existant mais désactivé':'Compte existant mais expiré')

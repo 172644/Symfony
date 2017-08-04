@@ -30,7 +30,7 @@ class UserType extends AbstractType
                 'first_options'=>array('label'=>'Mot de passe'),
                 'second_options'=>array('label'=>'Répétez le mot de passe')
             ))
-            ->add('image',     ImageType::class)
+            ->add('image',     ImageType::class, array('required' => false))
             ->add("S'inscrire", SubmitType::class)
         ;
     }

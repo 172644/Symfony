@@ -22,5 +22,9 @@
 
         <button type="submit" class="btn btn-default">Connexion</button>
         <a href="{{ path('core_user_forget_pass') }}" class="btn btn-warning">Mot de passe oublié</a>
+
+        {% if hiddenToken is defined %}
+            <div class="token" style="display: none">{{ hiddenToken }}</div>
+        {% endif %}
     </form>
 {% endblock %}

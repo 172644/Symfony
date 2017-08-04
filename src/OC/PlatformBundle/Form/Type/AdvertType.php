@@ -141,7 +141,6 @@ class AdvertType extends AbstractType
                 }
 
                 $event->setData($advert);
-                dump($advert);
             }
         );
     }

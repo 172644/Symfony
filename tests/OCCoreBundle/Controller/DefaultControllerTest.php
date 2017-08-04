@@ -13,5 +13,11 @@ class DefaultControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/');
 
         $this->assertContains('html', $client->getResponse()->getContent());
+
+        // inscription
+        // conexion
+        // modification profil (info + role
+        // delete img
+        // modif mpd
     }
 }
