@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use OC\PlatformBundle\Validator\Antiflood;
 use OC\CoreBundle\Entity\User;
 
 
@@ -67,7 +66,7 @@ class Advert
     private $published = true;
 
     /**
-     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="OC\CoreBundle\Entity\Image", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
      * @Assert\Valid()
     */
@@ -287,7 +286,7 @@ class Advert
     /**
      * Set image
      *
-     * @param \OC\PlatformBundle\Entity\Image $image
+     * @param \OC\CoreBundle\Entity\Image $image
      *
      * @return Advert
      */
@@ -301,7 +300,7 @@ class Advert
     /**
      * Get image
      *
-     * @return \OC\PlatformBundle\Entity\Image
+     * @return \OC\CoreBundle\Entity\Image
      */
     public function getImage()
     {

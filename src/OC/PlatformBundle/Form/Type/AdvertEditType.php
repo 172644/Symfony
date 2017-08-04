@@ -4,6 +4,8 @@ namespace OC\PlatformBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
 use OC\PlatformBundle\Entity\Category;
+use OC\CoreBundle\Form\Type\ImageType;
+use OC\CoreBundle\Form\Type\ImageEditType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

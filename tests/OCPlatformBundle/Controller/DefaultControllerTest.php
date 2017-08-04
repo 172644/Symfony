@@ -41,9 +41,7 @@ class DefaultControllerTest extends WebTestCase
         $client = static::createClient();
 
         ////////////////////////////////////////////////////////////////////////////////////////
-        $email = '172645@supinfo.com';
-        $author_user = $email;
-        $author_pass = '19941994aA';
+        $email = '172644@supinfo.com';
         $advertId = 4;
         $categoryId = 6;
         $applicationId = 5;
@@ -66,15 +64,73 @@ class DefaultControllerTest extends WebTestCase
         }
         echo $endSeparator."\n\n";
         $crawler = $client->followRedirect();
+
         ////////////////////////////////////////////////////////////////////////////////////////
-        // Connect
+
+        $endSeparator = $this->separatorTitle('REGISTER NEW AUTHOR USER');
+        echo "Click for register form ";
+        $link = $crawler->filter('#menu a:contains("Inscription")')->eq(0)->link();
+        $crawler = $client->click($link);
+        $this->assertContains('form', $client->getResponse()->getContent());
+        $this->assertContains('Inscription -', $client->getResponse()->getContent());
+        echo " -> OK\n";
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+
+        $_char = 'abcdefghijklmnopqrstuvwxyz';
+        $charUp = strtoupper($_char);
+        $char = $charUp.$_char."0123456789";
+        $mdp = str_shuffle($char);
+        $str = substr($mdp, 0, 10);
+        $user['author']['pass'] = $str;
+
+        $mdp = str_shuffle($_char);
+        $str = substr($mdp, 0, 10);
+        $user['author']['name'] = $str;
+        $user['author']['mail'] = $str.'@supinfo.com';
+
+        echo "\nDEBUG : ".$user['author']['mail'];
+        echo "\nDEBUG : ".$user['author']['name'];
+        echo "\nDEBUG : ".$user['author']['pass']." \n\n";
+
+        echo "\n/!\ /!\ THIS NEXT TEST CAN FAIL DUE EMAIL GENERATOR /!\ /!\ \n\n";
+        echo "Send registerUser form  ";
+        $form = $crawler->selectButton('S\'inscrire')->form();
+
+        $form['role'] = 'ROLE_AUTEUR';
+        $form['corebundle_user[username]'] = $user['author']['name'];
+        $form['corebundle_user[password][first]'] = $user['author']['pass'];
+        $form['corebundle_user[password][second]'] = $user['author']['pass'];
+        $form['corebundle_user[lastname]'] = $user['author']['name'];
+        $form['corebundle_user[firstname]'] = $user['author']['name'];
+        $form['corebundle_user[email]'] = $user['author']['mail'];
+
+        $crawler = $client->submit($form);
+
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isRedirect());
+        $crawler = $client->followRedirect();
+        $this->assertContains('form', $client->getResponse()->getContent());
+        $this->assertContains('Connexion -', $client->getResponse()->getContent());
+        echo " -> OK\n";
+
+        echo "Activate account ".$str." ";
+        $token = $crawler->filter('form .token')->extract(array('_text', 'href'));
+        $crawler = $client->request('GET', '/activate/'.$token[0][0]);
+        $this->assertContains('Votre compte a été activé avec succès', $client->getResponse()->getContent());
+        echo " -> OK\n";
+
+        ////////////////////////////////////////////////////////////////////////////////////////
+
         $endSeparator = $this->separatorTitle('LOGIN AUTHOR');
-        echo  'Send login form with : '.$author_user.' - '.$author_pass;
+        $crawler = $client->request('GET', '/platform/');
+        $crawler = $client->followRedirect();
+        echo  'Send login form with : '.$user['author']['mail'].' - '.$user['author']['pass'];
         $this->assertContains('form', $client->getResponse()->getContent());
         $form = $crawler->selectButton('Connexion')->form();
 
-        $form['_username'] = $author_user;
-        $form['_password'] = $author_pass;
+        $form['_username'] = $user['author']['mail'];
+        $form['_password'] = $user['author']['pass'];
 
         $crawler = $client->submit($form);
 
@@ -218,27 +274,28 @@ class DefaultControllerTest extends WebTestCase
         $char = $charUp.$_char."0123456789";
         $mdp = str_shuffle($char);
         $str = substr($mdp, 0, 10);
-        $searchPass = $str;
+        $user['search']['pass'] = $str;
 
         $mdp = str_shuffle($_char);
         $str = substr($mdp, 0, 10);
-        $searchUser = $str;
-        $searchUserMail = $str.'@supinfo.com';
+        $user['search']['name'] = $str;
+        $user['search']['mail'] = $str.'@supinfo.com';
 
-        echo "\nDEBUG : ".$searchUserMail;
-        echo "\nDEBUG : ".$searchUser;
-        echo "\nDEBUG : ".$searchPass." \n\n";
+        echo "\nDEBUG : ".$user['search']['mail'];
+        echo "\nDEBUG : ".$user['search']['name'];
+        echo "\nDEBUG : ".$user['search']['pass']." \n\n";
 
         echo "\n/!\ /!\ THIS NEXT TEST CAN FAIL DUE EMAIL GENERATOR /!\ /!\ \n\n";
         echo "Send registerUser form  ";
         $form = $crawler->selectButton('S\'inscrire')->form();
 
-        $form['corebundle_user[username]'] = $searchUser;
-        $form['corebundle_user[password][first]'] = $searchPass;
-        $form['corebundle_user[password][second]'] = $searchPass;
-        $form['corebundle_user[lastname]'] = $searchUser;
-        $form['corebundle_user[firstname]'] = $searchUser;
-        $form['corebundle_user[email]'] = $searchUserMail;
+        $form['role'] = 'ROLE_AUTEUR';
+        $form['corebundle_user[username]'] = $user['search']['name'];
+        $form['corebundle_user[password][first]'] = $user['search']['pass'];
+        $form['corebundle_user[password][second]'] = $user['search']['pass'];
+        $form['corebundle_user[lastname]'] = $user['search']['name'];
+        $form['corebundle_user[firstname]'] = $user['search']['name'];
+        $form['corebundle_user[email]'] = $user['search']['mail'];
 
         $crawler = $client->submit($form);
 
@@ -260,13 +317,13 @@ class DefaultControllerTest extends WebTestCase
 //        if ($client->getContainer()->get('security.password_encoder')->isPasswordValid($user_tmp, $searchPass)) {
 //            echo "\nplop\n";
 //        }
-        echo  'Send login form with : '.$searchUserMail.' - '.$searchPass;
+        echo  'Send login form with : '.$user['search']['mail'].' - '.$user['search']['pass'];
         $crawler = $client->request('GET', '/login');
         $this->assertContains('form', $client->getResponse()->getContent());
         $form = $crawler->selectButton('Connexion')->form();
 
-        $form['_username'] = $searchUserMail;
-        $form['_password'] = $searchPass;
+        $form['_username'] = $user['search']['mail'];
+        $form['_password'] = $user['search']['pass'];
 
         $crawler = $client->submit($form);
 

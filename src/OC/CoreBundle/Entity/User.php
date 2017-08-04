@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\Application;
 use Doctrine\Common\Collections\ArrayCollection;
-use OC\PlatformBundle\Entity\Image;
+use OC\CoreBundle\Entity\Image;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -140,7 +140,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $applications;
 
     /**
-     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="OC\CoreBundle\Entity\Image", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
      * @Assert\Valid()
      */
@@ -547,7 +547,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Set image
      *
-     * @param \OC\PlatformBundle\Entity\Image $image
+     * @param \OC\CoreBundle\Entity\Image $image
      *
      * @return User
      */
@@ -562,7 +562,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Get image
      *
-     * @return \OC\PlatformBundle\Entity\Image
+     * @return \OC\CoreBundle\Entity\Image
      */
     public function getImage()
     {

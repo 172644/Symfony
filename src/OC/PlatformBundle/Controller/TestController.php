@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use OC\PlatformBundle\Entity\Advert;
-use OC\PlatformBundle\Entity\Image;
+use OC\CoreBundle\Entity\Image;
 use OC\PlatformBundle\Entity\Application;
 use OC\CoreBundle\Entity\User;
 use OC\PlatformBundle\Entity\Category;
